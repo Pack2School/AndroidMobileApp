@@ -1,0 +1,2 @@
+rootProject.name='Pack2School'
+include ':app'

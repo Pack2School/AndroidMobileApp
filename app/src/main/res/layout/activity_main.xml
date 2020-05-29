@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorAccent"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:layout_width="358dp"
+        android:layout_height="74dp"
+        android:text="Welcome to Pack2School"
+        android:textSize="30dp"
+        android:layout_centerVertical="false"
+        android:layout_centerInParent="true"
+        android:layout_above="@id/Sign_up"/>
+
+    <Button
+        android:id="@+id/Sign_up"
+        android:layout_width="292dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_centerInParent="true"
+        android:text="Sign up" />
+
+    <Button
+        android:id="@+id/Sign_in"
+        android:layout_width="292dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="434dp"
+        android:layout_below="@id/Sign_up"
+        android:layout_centerInParent="true"
+        android:text="Sign in" />
+
+</RelativeLayout>

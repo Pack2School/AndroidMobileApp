@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorAccent"
+    tools:context=".sign_up_main_page">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Let's get you signed up!\n \nPlease select you're role:"
+        android:textSize="30dp"
+        android:layout_centerVertical="true"
+        android:layout_centerInParent="true"
+        android:layout_above="@id/Teacher"/>
+
+    <Button
+        android:id="@+id/Teacher"
+        android:layout_width="292dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_centerInParent="true"
+        android:text="Teacher" />
+
+    <Button
+        android:id="@+id/Student"
+        android:layout_width="292dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/Teacher"
+        android:layout_centerInParent="true"
+        android:text="Student" />
+
+    <Button
+        android:id="@+id/Parent"
+        android:layout_width="292dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="434dp"
+        android:layout_below="@id/Student"
+        android:layout_centerInParent="true"
+        android:text="Parent" />
+
+
+
+</RelativeLayout>
