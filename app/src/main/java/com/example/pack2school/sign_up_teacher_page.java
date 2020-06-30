@@ -21,13 +21,14 @@ public class sign_up_teacher_page extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 EditText name_input = (EditText) findViewById(R.id.name_input);
-                EditText school_input = (EditText) findViewById(R.id.school_input);
+                EditText id_input = (EditText) findViewById(R.id.id_input);
                 EditText email_input = (EditText) findViewById(R.id.email_input);
+                EditText password_input = (EditText) findViewById(R.id.password_input);
 
                 String name_input_str = name_input.getText().toString();
-                String school_input_str = school_input.getText().toString();
+                String school_input_str = id_input.getText().toString();
                 String email_input_str = email_input.getText().toString();
-
+                String password_input_str = password_input.getText().toString();
                 // TODO: call the correct azure function with this params...
             }
         });

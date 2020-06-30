@@ -10,9 +10,19 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Parent main page."
+        android:text="Parent Main Page"
         android:textSize="30dp"
-        android:layout_centerVertical="true"
-        android:layout_centerInParent="true" />
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp" />
+
+    <Button
+        android:id="@+id/scan_my_bag_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Scan Backpack"
+        android:layout_marginTop="450dp"
+        android:layout_gravity="center_horizontal|center"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin" />
 
 </RelativeLayout>

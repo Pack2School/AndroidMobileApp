@@ -12,25 +12,36 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="false"
-        android:text=" Parent Sign Up Page"
+        android:text="Parent Sign Up Page"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:textSize="30dp" />
 
     <EditText
-        android:id="@+id/parent_name_input"
+        android:id="@+id/name_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/text_view"
         android:layout_marginTop="50dp"
-        android:text="Your Full Name: (or maybe not needed?)"
+        android:text="Full Name:"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginEnd="@dimen/activity_horizontal_margin" />
 
     <EditText
-        android:id="@+id/child_user_id"
+        android:id="@+id/id_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/parent_name_input"
-        android:text="Child user id: "
+        android:layout_below="@+id/name_input"
+        android:text="ID Number: "
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp" />
+
+    <EditText
+        android:id="@+id/child_user_id_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/id_input"
+        android:text="Child ID Number: "
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginEnd="@dimen/activity_horizontal_margin" />
 
@@ -38,16 +49,25 @@
         android:id="@+id/email_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/child_user_id"
+        android:layout_below="@+id/child_user_id_input"
         android:text="Email: "
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginEnd="@dimen/activity_horizontal_margin" />
+
+    <EditText
+        android:id="@+id/password_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/email_input"
+        android:text="Password: "
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp" />
 
     <Button
         android:id="@+id/add_child_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/email_input"
+        android:layout_below="@+id/password_input"
         android:text="click here to add another child"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginEnd="@dimen/activity_horizontal_margin" />

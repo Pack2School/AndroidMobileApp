@@ -8,11 +8,43 @@
     tools:context=".teacher_main_page">
 
     <TextView
+        android:id="@+id/text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Teacher main page."
+        android:text="Teacher Main Page"
         android:textSize="30dp"
-        android:layout_centerVertical="true"
-        android:layout_centerInParent="true" />
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_centerInParent="false" />
+
+    <Button
+        android:id="@+id/create_class"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_view"
+        android:text="Create New Class"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp" />
+
+    <Button
+        android:id="@+id/update_tomorrow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/create_class"
+        android:text="Update Tomorrows Books"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp" />
+
+    <Button
+        android:id="@+id/checkout_class_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/update_tomorrow"
+        android:text="Checkout Class Status"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp" />
 
 </RelativeLayout>

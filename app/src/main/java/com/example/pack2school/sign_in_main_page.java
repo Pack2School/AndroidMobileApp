@@ -32,150 +32,24 @@ public class sign_in_main_page extends AppCompatActivity {
         send_input_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditText input_text_line = (EditText) findViewById(R.id.input_text_line);
-                //String user_id = input_text_line.getText().toString();
-                // string or int...
-                int user_id = Integer.parseInt(input_text_line.getText().toString());
+                EditText id_input = (EditText) findViewById(R.id.id_input);
+                EditText password_input = (EditText) findViewById(R.id.password_input);
+                String id_input_str = id_input.getText().toString();
+                String password_input_str = password_input.getText().toString();
+                // TODO: Now Call the azure function with our user id and password.. get the user
+                //  type from the response and open the correct main page.
 
 
+                // TODO: For now just open a new student main page displaying the entered id:
+                //int user_id = Integer.parseInt(id_input.getText().toString());
+                String user_id = id_input.getText().toString();
                 call_open_student_main_page(user_id);
-
-                // TODO: Now Call the azure function with our user id!
-                // using signalR this will be:
-                //MainActivity.hubConnection.send("Method to sign in..", user_id);
-                //using http this will be:
-//                OkHttpClient client = new OkHttpClient();
-//                String url = "url of azure function";
-//                Request request = new Request.Builder().url(url).build();
-//                client.newCall(request).enqueue(new Callback() {
-//                    @Override
-//                    public void onFailure(Call call, IOException e) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onResponse(Call call, Response response) throws IOException {
-//                        // if got back that er are a student:
-//
-//                        main_methods.open_student_main_page(2); // 2 should be replace by something extracted from response
-//                    }
-//                });
             }
         });
     }
 
-    public void call_open_student_main_page(int user_id){
+    public void call_open_student_main_page(String user_id){
         Intent intent =  MainActivity.open_student_main_page(this, user_id);
         startActivity(intent);
     }
-
 }
-
-//    @Background
-//    public void doPostText(View view) {
-//        String postBody = "{\n" +
-//                "    \"email\": \"melar@dev.com\",\n" +
-//                "    \"password\": \"melardev\"\n" +
-//                "}";
-//
-//        Request request = new Request.Builder()
-//                .url("https://reqres.in/api/register")
-//                .post(RequestBody.create(MediaType.parse("application/json; charset=utf-8")/*MediaType.parse("text/x-markdown; charset=utf-8")*/, postBody))
-//                .build();
-//
-//        Call call = okHttpClient.newCall(request);
-//        Response response = null;
-//        try {
-//            response = call.execute();
-//            String responseStr = response.body().string();
-//            updateResult(responseStr);
-//            //For authentication tutorial
-//            String token = null;
-//            try {
-//                //token = new JSONObject(response.body().string()).getString("token"); IllegalStateException: closed!!
-//                token = new JSONObject(responseStr).getString("token");
-//                /*Request requestForAuthorizedUsers = new Request.Builder()
-//                        .url("toRestrictedUrl")
-//                        .addHeader("Authorization", token
-//                        //Credentials.basic("thisismy@email.com", "thisismypassword")
-//                        )
-//                        .build();
-//                        */
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//    }
-//@Background
-//public void doPostJson(View view) {
-//    String jsonStr = "{\n" +
-//            "    \"name\": \"Melardev\",\n" +
-//            "    \"job\": \"Student\"\n" +
-//            "}";
-//
-//    RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonStr);
-//
-//    Request request = new Request.Builder()
-//            .url("https://reqres.in/api/users")
-//            .post(body)
-//            .build();
-//
-//
-//    Response response = null;
-//    try {
-//        response = okHttpClient.newCall(request).execute();
-//        updateResult(response.body().string()); //json2pojo already explained
-//    } catch (IOException e) {
-//        e.printStackTrace();
-//    }
-//}
-//
-//    @Background
-//    public void doGetWithParams(View view) {
-//        /*new HttpUrl.Builder()
-//                .scheme("https")
-//                .host("httpbin.org")
-//                .addPathSegment("get")*/
-//        String url = HttpUrl.parse("https://httpbin.org/get").newBuilder()
-//                .addEncodedQueryParameter("author", "Melar Dev") //for GET requests
-//                .addQueryParameter("category", "android") //for GET requests
-//                .build().toString();
-//
-//        Request request = new Request.Builder()
-//                .url(url)
-//                .build();
-//
-//
-//        Response response = null;
-//        try {
-//            response = okHttpClient.newCall(request).execute();
-//            updateResult(response.body().string());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    @Background
-//    public void doFormPostWithParams(View view) {
-//
-//        HttpUrl httpUrl = new HttpUrl.Builder()
-//                .scheme("https")
-//                .host("httpbin.org")
-//                .addPathSegment("post")
-//                .build();
-//
-//        FormBody form = new FormBody.Builder()
-//                .add("email", "thisismy@email.com")
-//                .add("password", "andthisismypassword")
-//                .build();
-//
-//
-//        try {
-//            updateResult(doSyncPost(okHttpClient, httpUrl, form));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
