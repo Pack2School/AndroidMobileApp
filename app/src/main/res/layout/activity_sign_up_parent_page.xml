@@ -45,11 +45,21 @@
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginEnd="@dimen/activity_horizontal_margin" />
 
+    <TextView
+        android:id="@+id/child_user_id_input_inst"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/child_user_id_input"
+        android:layout_centerInParent="false"
+        android:text="(if you have more than one child, please separate their IDs with a space)"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp" />
+
     <EditText
         android:id="@+id/email_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/child_user_id_input"
+        android:layout_below="@+id/child_user_id_input_inst"
         android:text="Email: "
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginEnd="@dimen/activity_horizontal_margin" />
@@ -63,20 +73,20 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp" />
 
-    <Button
-        android:id="@+id/add_child_btn"
+    <EditText
+        android:id="@+id/password_repeat_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/password_input"
-        android:text="click here to add another child"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
-        android:layout_marginEnd="@dimen/activity_horizontal_margin" />
+        android:text="Repeat Password: "
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp" />
 
     <Button
         android:id="@+id/lets_go_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/add_child_btn"
+        android:layout_below="@+id/password_repeat_input"
         android:text="Let's go!"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginEnd="@dimen/activity_horizontal_margin" />

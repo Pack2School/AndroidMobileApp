@@ -1,59 +1,45 @@
 package com.example.pack2school;
 
 import androidx.appcompat.app.AppCompatActivity;
-import cz.msebera.android.httpclient.Header;
+import retrofit2.Call;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.Button;
 
-import com.microsoft.signalr.Action1;
-import com.microsoft.signalr.HubConnection;
-import com.microsoft.signalr.HubConnectionBuilder;
-import com.microsoft.signalr.HubConnectionState;
+import java.util.ArrayList;
+import java.util.List;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.util.Dictionary;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-import com.loopj.android.http.*;
-
-import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String USER_TYPE = "USER_TYPE";
-    public static final String USER_ID = "USER_ID";
-    public static final String NAME = "NAME";
+    public static final String USER_TYPE = "userType";
+    public static final String USER_ID = "userID";
+    public static final String NAME = "userName";
     public static final String SCHOOL = "SCHOOL";
-    public static final String EMAIL = "EMAIL";
-    public static final String CLASS_ID = "CLASS_ID";
-    public static final String CHILDREN_IDS = "CHILDREN_IDS";
+    public static final String EMAIL = "userEmail";
+    public static final String CLASSES_IDS = "classIDs";
+    public static final String CHILDREN_IDS = "childrenIDs";
     public static final String PASSWORD = "PASSWORD";
+    public static final String STUDENT = "Student";
+    public static final String TEACHER = "Teacher";
+    public static final String PARENT = "Parent";
+    public static final String NO_INPUT = "NA";
 
     Button sign_up_btn;
     Button sign_in_btn;
-
-//    //Create a hubConnection:
-//    public static HubConnection hubConnection = HubConnectionBuilder.create("https://pack2schoolfunctions.azurewebsites.net/api/negotiate").build();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Our buttons that we added in the activity_main.xml:
         sign_up_btn = (Button)findViewById(R.id.Sign_up);
         sign_in_btn = (Button)findViewById(R.id.Sign_in);
 
@@ -72,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    // Methods for opening pages from within the main page:
+
     public void open_sign_up_page(){
         Intent intent = new Intent(this, sign_up_main_page.class);
         startActivity(intent);
@@ -82,142 +70,79 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    // When opening a page for specific user (will be called from both the sign_in and sign_up pages
-    // we will wand to pass the user id (which we will extract upon opening the page, in order
-    // to right away call some other function with the user_id and show the corresponding page).
-    // TODO - we may change the user_id input to something else, or just add extra params, it all
-    //  depends on what exactly the azure functions will return.
+    // Methods for opening new pages with given parameters:
 
-    public static Intent open_student_main_page(Context ctx, String user_id){
+    public static Intent open_student_main_page(Context ctx, String user_id, String user_name){
         Intent intent = new Intent(ctx, student_main_page.class);
         intent.putExtra(USER_ID, user_id);
+        intent.putExtra(NAME, user_name);
         return intent;
     }
 
-    public static Intent open_teacher_main_page(Context ctx, String user_id){
+    public static Intent open_teacher_main_page(Context ctx, String user_id, String user_name, ArrayList<String> classes_ids){
         Intent intent = new Intent(ctx, teacher_main_page.class);
         intent.putExtra(USER_ID, user_id);
+        intent.putExtra(NAME, user_name);
+        intent.putExtra(CLASSES_IDS, classes_ids);
         return intent;
     }
 
-    public static Intent open_parent_main_page(Context ctx, String user_id){
+    public static Intent open_parent_main_page(Context ctx, String user_id, String user_name, ArrayList<String> children_ids){
         Intent intent = new Intent(ctx, parent_main_page.class);
         intent.putExtra(USER_ID, user_id);
+        intent.putExtra(NAME, user_name);
+        intent.putExtra(CHILDREN_IDS, children_ids );
         return intent;
     }
 
-//    public static void send_http_request(String url, Dictionary params_dict){
-//        // First create the connection:
-//        try {
-//            URL url_obj = new URL(url);
-//            HttpURLConnection con = (HttpURLConnection) url_obj.openConnection();
-//            con.setRequestMethod("POST");
-//            con.setRequestProperty("User-Agent", "Mozilla/5.0");
-//        } catch (MalformedURLException e) {
-//            e.printStackTrace();
-//        }
-//    }
-
-    public static void get_async_http_request(String url, HashMap<String, String> params_dict){
-        new AsyncHttpClient().get(url, new AsyncHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                String response = new String(responseBody);
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-
-            }
-        });
-    }
-
-    public static void post_async_http_request(String url, HashMap<String, String> params_dict){
-        RequestParams our_params = new RequestParams();
-        for (String key : params_dict.keySet()){
-            our_params.add(key, params_dict.get(key));
+    public static Tuple<Boolean, String> log_sign_up_errors(Response<GenericResponse> response, String user_type){
+        if (!response.isSuccessful()) {
+            System.out.println("Error occurred in " + user_type + " sign up. Error code: " + response.code() + "Error message:" + response.message());
+            return new Tuple(false, response.message());
         }
-        new AsyncHttpClient().post(url, our_params, new AsyncHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                System.out.println(responseBody.toString());
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-
-            }
-        });
-    }
-
-    public static void yet_another_http_try(String url_str, Map<String, String> params_dict) throws Exception{
-        URL url = new URL(url_str);
-        StringBuilder postData = new StringBuilder();
-        for (Map.Entry param : params_dict.entrySet()){
-            if (postData.length() != 0) postData.append('&');
-            postData.append(URLEncoder.encode((String) param.getKey(), "UTF-8"));
-            postData.append('=');
-            postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
+        GenericResponse sign_up_response = response.body();
+        String error_message = sign_up_response.getErrorMessage();
+        boolean is_request_successful = sign_up_response.didRequestSucceed();
+        if (is_request_successful){
+            System.out.println(user_type + " sign up was successful.");
+            return new Tuple(true, null);
+        } else{
+            System.out.println(user_type + " sign up was not successful. Error is: " + error_message);
+            return new Tuple(false, error_message);
         }
-        byte[] postDataBytes = postData.toString().getBytes("UTF-8");
-        HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-        conn.setRequestMethod("POST");
-        conn.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
-        conn.setDoOutput(true);
-        conn.getOutputStream().write(postDataBytes);
-        Reader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
-        StringBuilder sb = new StringBuilder();
-        for (int c; (c = in.read()) >= 0;)
-            sb.append((char)c);
-        String response = sb.toString();
-        System.out.println(response);
-        // OR:
-//        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-//        String inputLine;
-//        StringBuffer response = new StringBuffer();
-//        while ((inputLine = in.readLine()) != null) {
-//            response.append(inputLine);
-//        }
-//        in.close();
-
-        JSONObject myResponse = new JSONObject(response);
-
-//        System.out.println("result after Reading JSON Response");
-//        System.out.println("origin- "+myResponse.getString("origin"));
-//        System.out.println("url- "+myResponse.getString("url"));
-//        JSONObject form_data = myResponse.getJSONObject("form");
-//        System.out.println("CODE- "+form_data.getString("CODE"));
-//        System.out.println("email- "+form_data.getString("email"));
-//        System.out.println("message- "+form_data.getString("message"));
-//        System.out.println("name"+form_data.getString("name"));
     }
 
-    public static JSONObject yet_another_http_get_try(String url_str) throws Exception{
-        URL url = new URL(url_str);
-        HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-        conn.setRequestMethod("GET");
-        conn.setDoOutput(true);
-        System.out.println("Now before reading!");
-        Reader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
-        System.out.println("Initialized reader, going to read....");
-        StringBuilder sb = new StringBuilder();
-        for (int c; (c = in.read()) >= 0;)
-            sb.append((char)c);
-        String response = sb.toString();
-        System.out.println(response);
-        // OR:
-//        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-//        String inputLine;
-//        StringBuffer response = new StringBuffer();
-//        while ((inputLine = in.readLine()) != null) {
-//            response.append(inputLine);
-//        }
-//        in.close();
-        JSONObject myResponse = new JSONObject(response);
-        return myResponse;
+    // SignalR general methods:
+
+    public Call<NegotiateSignalROutput> get_signalR_connection_call(String user_id, String device_id){
+        JsonPlaceHolderApi jsonPlaceHolderApi = getRetrofitJsonPlaceHolderApi();
+        NegotiateSignalRInput signalR_input = new NegotiateSignalRInput(user_id, device_id);
+        Call<NegotiateSignalROutput> signalR_call = jsonPlaceHolderApi.getNegotiateConnectionFromSignalR(signalR_input);
+        return signalR_call;
     }
 
+    // Methods for different api calls:
+
+    public static JsonPlaceHolderApi getRetrofitJsonPlaceHolderApi(){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://pack2schoolfunctions.azurewebsites.net/api/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        JsonPlaceHolderApi jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderApi.class);
+        return jsonPlaceHolderApi;
+    }
+
+    // General Utils:
+
+    public static boolean are_passwords_aligned(String first, String second){
+        if(!first.equals(second)){
+            return false;
+        }
+        return true;
+    }
 }
+
+
 
 
 
@@ -265,169 +190,4 @@ public class MainActivity extends AppCompatActivity {
 //                }
 //            }
 //        });
-
-
-
-//                // With http 3:
-//                okhttp3.Request request = new okhttp3.Request.Builder().url(url).post(body).build();
-//
-//                OkHttpClient client = new OkHttpClient();
-//                RequestBody requestBody = new MultipartBody.Builder()
-//                        .setType(MultipartBody.FORM)
-//                        .addFormDataPart("somParam", "someValue")
-//                        .build();
-//
-//                Request request = new Request.Builder()
-//                        .url(BASE_URL + route)
-//                        .post(requestBody)
-//                        .build();
-//                try {
-//                    Response response = client.newCall(request).execute();
-//
-//                    // Do something with the response.
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-
-//                // with creating uri:
-//                URL url = null;
-//                try {
-//                    url = new URL("<server url>");
-//                } catch (MalformedURLException e) {
-//                    e.printStackTrace();
-//                }
-//                try {
-//                    HttpURLConnection httpUrlConnection = (HttpURLConnection) url.openConnection();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//                List<NameValuePair> listOfParameters = ...;
-//                URI uri = new URIBuilder("http://example.com:8080/path/to/resource?mandatoryParam=someValue")
-//                        .addParameter("firstParam", firstVal)
-//                        .addParameter("secondParam", secondVal)
-//                        .addParameters(listOfParameters)
-//                        .build();
-//                //Otherwise, you can specify all parameters explicitly:
-//
-//                URI uri = new URIBuilder()
-//                        .setScheme("http")
-//                        .setHost("example.com")
-//                        .setPort(8080)
-//                        .setPath("/path/to/resource")
-//                        .addParameter("mandatoryParam", "someValue")
-//                        .addParameter("firstParam", firstVal)
-//                        .addParameter("secondParam", secondVal)
-//                        .addParameters(listOfParameters)
-//                        .build();
-
-
-
-
-//    @Background
-//    public void doPostText(View view) {
-//        String postBody = "{\n" +
-//                "    \"email\": \"melar@dev.com\",\n" +
-//                "    \"password\": \"melardev\"\n" +
-//                "}";
-//
-//        Request request = new Request.Builder()
-//                .url("https://reqres.in/api/register")
-//                .post(RequestBody.create(MediaType.parse("application/json; charset=utf-8")/*MediaType.parse("text/x-markdown; charset=utf-8")*/, postBody))
-//                .build();
-//
-//        Call call = okHttpClient.newCall(request);
-//        Response response = null;
-//        try {
-//            response = call.execute();
-//            String responseStr = response.body().string();
-//            updateResult(responseStr);
-//            //For authentication tutorial
-//            String token = null;
-//            try {
-//                //token = new JSONObject(response.body().string()).getString("token"); IllegalStateException: closed!!
-//                token = new JSONObject(responseStr).getString("token");
-//                /*Request requestForAuthorizedUsers = new Request.Builder()
-//                        .url("toRestrictedUrl")
-//                        .addHeader("Authorization", token
-//                        //Credentials.basic("thisismy@email.com", "thisismypassword")
-//                        )
-//                        .build();
-//                        */
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//    }
-//@Background
-//public void doPostJson(View view) {
-//    String jsonStr = "{\n" +
-//            "    \"name\": \"Melardev\",\n" +
-//            "    \"job\": \"Student\"\n" +
-//            "}";
-//
-//    RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonStr);
-//
-//    Request request = new Request.Builder()
-//            .url("https://reqres.in/api/users")
-//            .post(body)
-//            .build();
-//
-//
-//    Response response = null;
-//    try {
-//        response = okHttpClient.newCall(request).execute();
-//        updateResult(response.body().string()); //json2pojo already explained
-//    } catch (IOException e) {
-//        e.printStackTrace();
-//    }
-//}
-//
-//    @Background
-//    public void doGetWithParams(View view) {
-//        /*new HttpUrl.Builder()
-//                .scheme("https")
-//                .host("httpbin.org")
-//                .addPathSegment("get")*/
-//        String url = HttpUrl.parse("https://httpbin.org/get").newBuilder()
-//                .addEncodedQueryParameter("author", "Melar Dev") //for GET requests
-//                .addQueryParameter("category", "android") //for GET requests
-//                .build().toString();
-//
-//        Request request = new Request.Builder()
-//                .url(url)
-//                .build();
-//
-//
-//        Response response = null;
-//        try {
-//            response = okHttpClient.newCall(request).execute();
-//            updateResult(response.body().string());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    @Background
-//    public void doFormPostWithParams(View view) {
-//
-//        HttpUrl httpUrl = new HttpUrl.Builder()
-//                .scheme("https")
-//                .host("httpbin.org")
-//                .addPathSegment("post")
-//                .build();
-//
-//        FormBody form = new FormBody.Builder()
-//                .add("email", "thisismy@email.com")
-//                .add("password", "andthisismypassword")
-//                .build();
-//
-//
-//        try {
-//            updateResult(doSyncPost(okHttpClient, httpUrl, form));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
 //    }

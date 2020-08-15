@@ -16,4 +16,10 @@ public interface JsonPlaceHolderApi {
 
     @POST("negotiate")
     Call<NegotiateSignalROutput> getNegotiateConnectionFromSignalR(@Body NegotiateSignalRInput body);
+
+    @POST("SignUp")
+    Call<GenericResponse> signUp(@Body UserRequest body);
+
+    @POST("SignIn")
+    Call<GenericResponse> signIn(@Body UserRequest body);
 }
