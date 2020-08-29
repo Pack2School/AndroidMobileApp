@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".teacher_update_class_books_page"
+    android:background="@color/colorAccent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/class_name_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="false"
+                android:layout_marginTop="28dp"
+                android:layout_marginStart="16dp"
+                android:text="Update needed books"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/instructions_text"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Please select the subjects needed for tomorrow:"
+                android:textSize="20dp"
+                android:layout_below="@+id/class_name_text_view"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp" />
+
+            <ListView
+                android:id="@+id/multi_choice_list_view"
+                android:layout_width="match_parent"
+                android:layout_height="358dp"
+                android:layout_below="@+id/instructions_text"
+                android:layout_marginTop="10dp" />
+
+            <Button
+                android:id="@+id/update_tomorrow_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_below="@+id/multi_choice_list_view"
+                android:text="send update"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp" />
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

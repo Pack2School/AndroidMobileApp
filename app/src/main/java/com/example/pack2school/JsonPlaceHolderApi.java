@@ -8,12 +8,34 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface JsonPlaceHolderApi {
-    // instead of "posts" should be our ending of the url. for example if the base url is:
+    // For example if the base url is:
     // https://pack2schoolfunctions.azurewebsites.net/api/
-    // then the below should be "negotiate"
-    @GET("UpdateStudent")
-    Call<List<NegotiatePost>> getPosts();
+    // then if the below is "negotiate", we will access the "negotiate" method in the above base url.
 
     @POST("negotiate")
     Call<NegotiateSignalROutput> getNegotiateConnectionFromSignalR(@Body NegotiateSignalRInput body);
+
+    @POST("SignUp")
+    Call<GenericResponse> signUp(@Body UserRequest body);
+
+    @POST("SignIn")
+    Call<GenericResponse> signIn(@Body UserRequest body);
+
+    @POST("GetChildInfo")
+    Call<GenericResponse> GetStudentClassTableName(@Body UserRequest body);
+
+    @POST("GetNeededSubjects")
+    Call<GenericResponse> GetNeededSubjects(@Body SubjectRequest body);
+
+    @POST("GetMissingSubjects")
+    Call<GenericResponse> GetMissingSubjects(@Body SubjectRequest body);
+
+    @POST("AddNewClass")
+    Call<GenericResponse> AddNewClass(@Body SchoolClassRequest body);
+
+    @POST("GetAllSubjects")
+    Call<GenericResponse> GetAllSubjects(@Body SubjectRequest body);
+
+    @POST("EditSubject")
+    Call<GenericResponse> EditSubject(@Body SubjectRequest body);
 }

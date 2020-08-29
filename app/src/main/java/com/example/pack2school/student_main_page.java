@@ -19,14 +19,12 @@ import com.microsoft.signalr.Action1;
 import com.microsoft.signalr.HubConnection;
 import com.microsoft.signalr.HubConnectionBuilder;
 
-import org.json.JSONObject;
-
-import java.util.Map;
 
 public class student_main_page extends AppCompatActivity {
 
     Intent myIntent;
     String my_user_id_as_string;
+    String my_name_as_string;
     TextView user_id_text_view;
     Button scan_my_bag_btn;
     HubConnection hubConnection;
@@ -38,6 +36,7 @@ public class student_main_page extends AppCompatActivity {
 
         myIntent = getIntent();
         my_user_id_as_string = myIntent.getStringExtra(MainActivity.USER_ID);
+        my_name_as_string = myIntent.getStringExtra(MainActivity.NAME);
         user_id_text_view = (TextView)findViewById(R.id.user_id_text_view);
         user_id_text_view.setText(my_user_id_as_string);
         scan_my_bag_btn = (Button)findViewById(R.id.scan_my_bag_btn);
@@ -170,58 +169,3 @@ public class student_main_page extends AppCompatActivity {
         return post[0];
     }
 }
-
-
-
-//////////////////////////////////////// Code I used for testing... to be deleted later ///////////////////////////////////////////
-//                Call<List<NegotiatePost>> call = jsonPlaceHolderApi.getPosts();
-//                call.enqueue(new Callback<List<NegotiatePost>>() {
-//                    @Override
-//                    public void onResponse(Call<List<NegotiatePost>> call, Response<List<NegotiatePost>> response) {
-//                        if (!response.isSuccessful()) {
-//                            user_id_text_view.setText("Code: " + response.code());
-//                            return;
-//                        }
-//                        List<NegotiatePost> posts = response.body();
-//                        for (NegotiatePost post : posts) {
-//                            String content = "";
-//                            content += "ID: " + post.getId() + "\n";
-//                            content += "User ID: " + post.getUserId() + "\n";
-//                            content += "Title: " + post.getTitle() + "\n";
-//                            content += "Text: " + post.getText() + "\n\n";
-//                            user_id_text_view.append(content);
-//                        }
-//                    }
-//                    @Override
-//                    public void onFailure(Call<List<NegotiatePost>> call, Throwable t) {
-//                        user_id_text_view.setText(t.getMessage());
-//                    }
-//                });
-
-// http://10.100.102.23:7071/api/ -> https://pack2schoolfunctions.azurewebsites.net/api/
-// WORKING!
-//                OkHttpClient client = new OkHttpClient();
-//                //String url = "https://jsonplaceholder.typicode.com/posts/1"; Works!
-//                String url = "https://pack2schoolfunctions.azurewebsites.net/api/negotiate";
-//                Request request = new Request.Builder().url(url).build();
-//                client.newCall(request).enqueue(new Callback() {
-//                    // enqueue runs the request in the background, since it forbidden to run it in the main
-//                    // thread.
-//                    @Override
-//                    public void onFailure(Call call, IOException e) {
-//                        System.out.println("cossseeeeemmmmeeeeeekkkkk");
-//                        e.printStackTrace();
-//                    }
-//                    @Override
-//                    public void onResponse(Call call, Response response) throws IOException {
-//                        if(response.isSuccessful()){
-//                            String our_response = response.body().string();
-//                            student_main_page.this.runOnUiThread(new Runnable() {
-//                                @Override
-//                                public void run() {
-//                                    user_id_text_view.setText(our_response);
-//                                }
-//                            });
-//                        }
-//                    }
-//                });

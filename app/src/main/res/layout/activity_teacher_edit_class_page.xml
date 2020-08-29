@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorAccent"
+    tools:context=".teacher_edit_class_page">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/class_name_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="false"
+                android:layout_marginTop="28dp"
+                android:layout_marginStart="16dp"
+                android:text="Edit Class"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/instructions_text"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Type in a subject name to add a new subject or rename an existing one.\nOr, delete an existing subject.\n\nSubjects to choose from:"
+                android:textSize="20dp"
+                android:layout_below="@+id/class_name_text_view"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp" />
+
+            <Spinner
+                android:id="@+id/selected_subject_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/instructions_text"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="5dp"/>
+
+            <EditText
+                android:id="@+id/new_subject_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/selected_subject_spinner"
+                android:text="enter new subject's name"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp" />
+
+            <Button
+                android:id="@+id/add_subject_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/new_subject_edit_text"
+                android:text="Add new subject"
+                android:layout_marginTop="80dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp" />
+
+            <Button
+                android:id="@+id/rename_subject_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/add_subject_btn"
+                android:text="Rename subject"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp" />
+
+            <Button
+                android:id="@+id/delete_subject_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_below="@+id/rename_subject_btn"
+                android:text="Delete subject"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp" />
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>
