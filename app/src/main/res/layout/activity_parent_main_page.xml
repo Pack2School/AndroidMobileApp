@@ -8,19 +8,91 @@
     android:background="@color/colorAccent">
 
     <TextView
+        android:id="@+id/user_name_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Parent Main Page"
-        android:textSize="30dp"
+        android:layout_centerInParent="false"
+        android:text="Welcome"
+        android:textSize="20dp"
+        android:layout_marginTop="28dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp" />
+
+    <TextView
+        android:id="@+id/user_id_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="User ID:"
+        android:textSize="20dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_below="@+id/user_name_text_view"
+        android:layout_centerInParent="false" />
+
+    <TextView
+        android:id="@+id/instructions_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Please choose a child from the list below, and hit the SCAN BACKPACK button in order to see your child's updated backpack content."
+        android:textSize="15dp"
+        android:layout_marginStart="16dp"
+        android:layout_below="@+id/user_id_text_view"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="16dp" />
+
+    <Spinner
+        android:id="@+id/selected_child_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/instructions_text"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="5dp"/>
+
+    <TextView
+        android:id="@+id/needed_books_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Needed books: "
+        android:textSize="20dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_below="@+id/selected_child_spinner"
+        android:layout_centerInParent="false" />
+
+    <TextView
+        android:id="@+id/missing_books_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Missing books: "
+        android:textSize="20dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_below="@+id/needed_books_text_view"
+        android:layout_centerInParent="false" />
+
+
+    <Button
+        android:id="@+id/add_children_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add another child (disabled)"
+        android:layout_below="@+id/missing_books_text_view"
+        android:layout_marginTop="200dp"
+        android:layout_gravity="center_horizontal|center"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin" />
 
     <Button
         android:id="@+id/scan_my_bag_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/add_children_btn"
         android:text="Scan Backpack"
-        android:layout_marginTop="450dp"
+        android:layout_marginTop="5dp"
         android:layout_gravity="center_horizontal|center"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginEnd="@dimen/activity_horizontal_margin" />

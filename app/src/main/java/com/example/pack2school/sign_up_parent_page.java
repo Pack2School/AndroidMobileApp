@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -64,15 +65,14 @@ public class sign_up_parent_page extends AppCompatActivity {
                                                             children_ids,
                                                            null,
                                                            null,
-                                                            null,
                                                             null);
                 Call<GenericResponse> sign_up_call = jsonPlaceHolderApi.signUp(sign_up_input);
                 sign_up_call.enqueue(new Callback<GenericResponse>() {
                     @Override
                     public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
-                        Tuple sign_up_result = MainActivity.log_sign_up_errors(response, type_input_str);
+                        Tuple sign_up_result = MainActivity.log_request_errors(response, type_input_str, MainActivity.SIGN_UP);
                         if (sign_up_result.getSucceeded()){
-                            call_open_parent_main_page(id_input_str, name_input_str);
+                            call_open_parent_main_page(id_input_str, name_input_str, children_ids);
                         }
                         else{
                             show_message("Error: " + sign_up_result.getError_message());
@@ -90,8 +90,9 @@ public class sign_up_parent_page extends AppCompatActivity {
         });
     }
 
-    private void call_open_parent_main_page(String student_id, String student_name){
-        Intent intent =  MainActivity.open_parent_main_page(this, student_id, student_name);
+    private void call_open_parent_main_page(String student_id, String student_name, List<String> children_ids){
+        ArrayList<String> casted_children_ids = new ArrayList(Arrays.asList(children_ids));
+        Intent intent = MainActivity.open_parent_main_page(this, student_id, student_name, casted_children_ids);
         startActivity(intent);
     }
 

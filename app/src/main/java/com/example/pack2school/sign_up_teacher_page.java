@@ -13,7 +13,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 
-public class  sign_up_teacher_page extends AppCompatActivity {
+public class sign_up_teacher_page extends AppCompatActivity {
 
     Button lets_go_btn;
     String name_input_str;
@@ -57,13 +57,12 @@ public class  sign_up_teacher_page extends AppCompatActivity {
                                                             null,
                                                             null,
                                                             null,
-                                                            null,
                                                             null);
                 Call<GenericResponse> sign_up_call = jsonPlaceHolderApi.signUp(sign_up_input);
                 sign_up_call.enqueue(new Callback<GenericResponse>() {
                     @Override
                     public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
-                        Tuple sign_up_result = MainActivity.log_sign_up_errors(response, type_input_str);
+                        Tuple sign_up_result = MainActivity.log_request_errors(response, type_input_str, MainActivity.SIGN_UP);
                         if (sign_up_result.getSucceeded()){
                             call_open_teacher_main_page(id_input_str, name_input_str);
                         }

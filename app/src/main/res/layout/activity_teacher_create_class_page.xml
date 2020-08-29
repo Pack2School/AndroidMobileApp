@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorAccent"
+    tools:context=".teacher_create_class_page">
+
+    <TextView
+        android:id="@+id/headline_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Let's create a new class!\nPlease select a name for the class:"
+        android:textSize="25dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="30dp"
+        android:layout_centerVertical="false"
+        android:layout_centerInParent="false"/>
+
+    <EditText
+        android:id="@+id/class_name_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/headline_text_view"
+        android:text="Class Name: (for example: 'A3')"
+        android:layout_marginTop="220dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp" />
+
+    <Button
+        android:id="@+id/send_input_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Let's Go!"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/class_name_edit_text"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        />
+
+</RelativeLayout>

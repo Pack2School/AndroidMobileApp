@@ -7,76 +7,86 @@
     android:background="@color/colorAccent"
     tools:context=".teacher_main_page">
 
-    <TextView
-        android:id="@+id/user_name_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="false"
-        android:layout_marginTop="28dp"
-        android:layout_marginStart="16dp"
-        android:text="Welcome"
-        android:textSize="20dp" />
-
-    <TextView
-        android:id="@+id/user_id_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="User ID:"
-        android:textSize="20dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_below="@+id/user_name_text_view"
-        android:layout_centerInParent="false" />
-
-    <Button
-        android:id="@+id/create_class_btn"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/user_id_text_view"
-        android:text="Create New Class"
-        android:layout_marginTop="50dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp" />
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/update_tomorrow_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/create_class_btn"
-        android:text="Update Tomorrows Books"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp" />
+        <TextView
+            android:id="@+id/user_name_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="false"
+            android:layout_marginTop="28dp"
+            android:layout_marginStart="16dp"
+            android:text="Welcome"
+            android:textSize="20dp" />
 
-    <Button
-        android:id="@+id/checkout_class_status_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_below="@+id/update_tomorrow_btn"
-        android:text="Checkout Class Status"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp" />
+        <TextView
+            android:id="@+id/user_id_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="User ID:"
+            android:textSize="20dp"
+            android:layout_marginTop="28dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_below="@+id/user_name_text_view"
+            android:layout_centerInParent="false" />
 
-    <TextView
-        android:id="@+id/instructions_text"
-        android:layout_marginTop="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Please choose a class to checkout/update it's needed books:"
-        android:textSize="20dp"
-        android:layout_below="@+id/checkout_class_status_btn"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp" />
+        <TextView
+            android:id="@+id/instructions_text"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="If you want to add a new class, just press CREATE NEW CLASS.\nIf you wish to update the books for an existing class, or to edit the class subjects, please choose a class from the drop down menu and then press UPDATE TOMORROWS BOOKS or EDIT CLASS."
+            android:textSize="20dp"
+            android:layout_below="@+id/user_id_text_view"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp" />
 
-    <Spinner
-        android:id="@+id/selected_class_spinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/instructions_text"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="5dp"/>
+        <Spinner
+            android:id="@+id/selected_class_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/instructions_text"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="5dp"/>
+
+        <Button
+            android:id="@+id/create_class_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/selected_class_spinner"
+            android:text="Create New Class"
+            android:layout_marginTop="150dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp" />
+
+        <Button
+            android:id="@+id/update_tomorrow_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/create_class_btn"
+            android:text="Update Tomorrows Books"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp" />
+
+        <Button
+            android:id="@+id/edit_class_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/update_tomorrow_btn"
+            android:text="Edit Class"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="30dp" />
+
+        </RelativeLayout>
+    </ScrollView>
 
 </RelativeLayout>

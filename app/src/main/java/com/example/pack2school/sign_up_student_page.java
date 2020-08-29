@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.Map;
+
 
 public class sign_up_student_page extends AppCompatActivity {
 
@@ -23,7 +25,6 @@ public class sign_up_student_page extends AppCompatActivity {
     String password_input_str;
     String password_repeat_input_str;
     String type_input_str = MainActivity.STUDENT;
-    String device_id_input_str;
     String teacher_name_input_str;
 
     @Override
@@ -41,7 +42,6 @@ public class sign_up_student_page extends AppCompatActivity {
                 EditText class_id_input = (EditText) findViewById(R.id.class_id_input);
                 EditText email_input = (EditText) findViewById(R.id.email_input);
                 EditText password_repeat_input = (EditText) findViewById(R.id.password_repeat_input);
-                EditText device_id_input = (EditText) findViewById(R.id.scanner_id_input);
                 EditText teacher_name_input = (EditText) findViewById(R.id.teacher_name_input);
 
                 name_input_str = name_input.getText().toString();
@@ -50,7 +50,6 @@ public class sign_up_student_page extends AppCompatActivity {
                 password_input_str = password_input.getText().toString();
                 password_repeat_input_str = password_repeat_input.getText().toString();
                 email_input_str = email_input.getText().toString();
-                device_id_input_str = device_id_input.getText().toString();
                 teacher_name_input_str = teacher_name_input.getText().toString();
 
                 if(! MainActivity.are_passwords_aligned(password_input_str, password_repeat_input_str)){
@@ -64,18 +63,22 @@ public class sign_up_student_page extends AppCompatActivity {
                                                             email_input_str,
                                                             password_input_str,
                                                             null,
-                                                            device_id_input_str,
                                                             null,
                                                             class_id_input_str,
-                                                            teacher_name_input_str
-                                                            );
+                                                            teacher_name_input_str);
                 Call<GenericResponse> sign_up_call = jsonPlaceHolderApi.signUp(sign_up_input);
                 sign_up_call.enqueue(new Callback<GenericResponse>() {
                     @Override
                     public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
-                        Tuple sign_up_result = MainActivity.log_sign_up_errors(response, type_input_str);
+                        Tuple sign_up_result = MainActivity.log_request_errors(response, type_input_str, MainActivity.SIGN_UP);
                         if (sign_up_result.getSucceeded()){
-                            call_open_student_main_page(id_input_str, name_input_str);
+                            System.out.println("Entered a successful Student sign up.");
+                            GenericResponse sign_up_response = response.body();
+                            Map<String, Object> response_data = (Map<String, Object>) sign_up_response.getData();
+                            System.out.println("Entered a successful Student sign up - extracted Map<String, Object>.");
+                            String device_connection_string = (String) response_data.get(MainActivity.DEVICE_CONNECTION_STRING);
+                            System.out.println("Student received following device connection string: \n" + device_connection_string);
+                            call_open_student_main_page(id_input_str, name_input_str, device_connection_string);
                         }
                         else{
                             show_message("Error: " + sign_up_result.getError_message());
@@ -93,8 +96,8 @@ public class sign_up_student_page extends AppCompatActivity {
         });
     }
 
-    private void call_open_student_main_page(String student_id, String student_name){
-        Intent intent =  MainActivity.open_student_main_page(this, student_id, student_name);
+    private void call_open_student_main_page(String student_id, String student_name, String device_connection_string){
+        Intent intent =  MainActivity.open_student_main_page(this, student_id, student_name, device_connection_string);
         startActivity(intent);
     }
 

@@ -13,7 +13,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -44,9 +44,8 @@ public class sign_in_main_page extends AppCompatActivity {
                         null,
                         null,
                         null,
-                        null,
                         null);
-                Call<GenericResponse> sign_in_call = jsonPlaceHolderApi.signUp(sign_in_input);
+                Call<GenericResponse> sign_in_call = jsonPlaceHolderApi.signIn(sign_in_input);
                 sign_in_call.enqueue(new Callback<GenericResponse>() {
                     @Override
                     public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
@@ -59,10 +58,11 @@ public class sign_in_main_page extends AppCompatActivity {
                         String error_message = sign_in_response.getErrorMessage();
                         boolean is_request_successful = sign_in_response.didRequestSucceed();
                         if (is_request_successful){
-                            System.out.println("sign up was successful.");
+                            System.out.println("sign in was successful.");
                             // The return of a sign in is a dictionary containing both the user type
                             // and the list of classes associated with that user:
-                            Map<String, Object> response_data   = (Map<String, Object>) sign_in_response.getData();
+                            Map<String, Object> response_data = (Map<String, Object>) sign_in_response.getData();
+                            System.out.println("Sign in entire data response object: " + response_data);
                             String user_type = (String) response_data.get(MainActivity.USER_TYPE);
                             String user_name = (String) response_data.get(MainActivity.NAME);
 
@@ -70,14 +70,14 @@ public class sign_in_main_page extends AppCompatActivity {
                                 next_intent = get_open_student_main_page_intent(id_input_str, user_name);
                             }
                             else if(user_type.equals(MainActivity.TEACHER)){
-                                List<String> user_classes = (List<String>) response_data.get(MainActivity.CLASSES_IDS);
+                                List<String> user_classes = (List<String>) response_data.get(MainActivity.INFO);
                                 log_list_items(user_classes, user_type);
-                                next_intent = get_open_teacher_main_page_intent(id_input_str, user_name, (ArrayList<String>) user_classes);
+                                next_intent = get_open_teacher_main_page_intent(id_input_str, user_name, user_classes);
                             }
                             else if(user_type.equals(MainActivity.PARENT)){
-                                List<String> childrenIDs = (List<String>) response_data.get(MainActivity.CHILDREN_IDS);
+                                List<String> childrenIDs = (List<String>) response_data.get(MainActivity.INFO);
                                 log_list_items(childrenIDs, user_type);
-                                next_intent = get_open_parent_main_page_intent(id_input_str, user_name, (ArrayList<String>) childrenIDs);
+                                next_intent = get_open_parent_main_page_intent(id_input_str, user_name, childrenIDs);
                             }
                             else{
                                 error_message = "Got back un-familiar user type " + user_type + " \n";
@@ -87,7 +87,7 @@ public class sign_in_main_page extends AppCompatActivity {
                             }
                             startActivity(next_intent);
                         } else{
-                            System.out.println("sign up was not successful. Error is: " + error_message);
+                            System.out.println("sign in was not successful. Error is: " + error_message);
                             show_message("Error: " + error_message);
                         }
                     }
@@ -109,21 +109,29 @@ public class sign_in_main_page extends AppCompatActivity {
 
 
     private Intent get_open_student_main_page_intent(String user_id, String user_name){
-        Intent intent =  MainActivity.open_student_main_page(this, user_id, user_name);
+        Intent intent =  MainActivity.open_student_main_page(this, user_id, user_name, null);
         return intent;
     }
 
-    private Intent get_open_parent_main_page_intent(String user_id, String user_name, ArrayList<String> childrenIDs){
-        Intent intent =  MainActivity.open_parent_main_page(this, user_id, user_name, childrenIDs);
+    private Intent get_open_parent_main_page_intent(String user_id, String user_name, List<String> childrenIDs){
+        ArrayList<String> casted_children_ids = new ArrayList<>(childrenIDs.size());
+        casted_children_ids.addAll(childrenIDs);
+        Intent intent =  MainActivity.open_parent_main_page(this, user_id, user_name, casted_children_ids);
         return intent;
     }
 
-    private Intent get_open_teacher_main_page_intent(String user_id, String user_name, ArrayList<String> classesIDs){
-        Intent intent =  MainActivity.open_teacher_main_page(this, user_id, user_name, classesIDs);
+    private Intent get_open_teacher_main_page_intent(String user_id, String user_name, List<String> classesIDs){
+        ArrayList<String> casted_classes_ids = new ArrayList<>(classesIDs.size());
+        casted_classes_ids.addAll(classesIDs);
+        Intent intent =  MainActivity.open_teacher_main_page(this, user_id, user_name, casted_classes_ids);
         return intent;
     }
 
     private void log_list_items(List<String> list_items, String user_type){
+        if(list_items == null){
+            System.out.println(user_type + " received an empty list of items.");
+            return;
+        }
         System.out.println(user_type + " received the following list items: (total of " + list_items.size() + ")\n");
         for(String item: list_items){
             System.out.println(item + "\n");

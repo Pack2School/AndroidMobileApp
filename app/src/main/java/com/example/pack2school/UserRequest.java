@@ -8,22 +8,20 @@ public class UserRequest {
     private String userType;
     private String userEmail;
     private String userPassword;
-    private List<String> childrenId;
-    private String deviceId;
+    private List<String> childrenIds;
     private String subjectsTableName;
     private String classId;
     private String teacherUser;
 
     public UserRequest(String UserId, String UserName, String UserType, String UserEmail,
-                       String UserPassword, List<String> ChildrenId, String DeviceId,
+                       String UserPassword, List<String> ChildrenIds,
                        String SubjectsTableName, String ClassId, String TeacherUser){
         userId = UserId;
         userName = UserName;
         userType = UserType;
         userEmail = UserEmail;
         userPassword = UserPassword;
-        childrenId = ChildrenId;
-        deviceId = DeviceId;
+        childrenIds = ChildrenIds;
         subjectsTableName = SubjectsTableName;
         classId = ClassId;
         teacherUser = TeacherUser;
@@ -33,7 +31,7 @@ public class UserRequest {
 
     public String getTeacherUser() { return teacherUser; }
 
-    public List<String> getChildrenId() { return childrenId; }
+    public List<String> getChildrenId() { return childrenIds; }
 
     public String getUserId() {
         return userId;
@@ -59,7 +57,4 @@ public class UserRequest {
         return subjectsTableName;
     }
 
-    public String getDeviceId() {
-        return deviceId;
-    }
 }

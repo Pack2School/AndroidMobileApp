@@ -9,12 +9,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.View;
 import android.widget.Button;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -22,15 +20,33 @@ public class MainActivity extends AppCompatActivity {
     public static final String USER_TYPE = "userType";
     public static final String USER_ID = "userID";
     public static final String NAME = "userName";
+    public static final String DEVICE_CONNECTION_STRING = "deviceConnectionString";
     public static final String SCHOOL = "SCHOOL";
     public static final String EMAIL = "userEmail";
     public static final String CLASSES_IDS = "classIDs";
     public static final String CHILDREN_IDS = "childrenIDs";
+    public static final String INFO = "Info";
     public static final String PASSWORD = "PASSWORD";
     public static final String STUDENT = "Student";
     public static final String TEACHER = "Teacher";
     public static final String PARENT = "Parent";
+    public static final String SUBJECTS = "Subjects";
     public static final String NO_INPUT = "NA";
+    public static final String NO_CHILDREN_RECEIVED = "There are no children associated with your account.";
+    public static final String NO_CLASSES_RECEIVED = "There are no classes associated with your account.";
+    public static final String NO_SUBJECTS_RECEIVED = "There are no subjects associated with this class.";
+    // Operation names:
+    public static final String SIGN_UP = "Sign Up";
+    public static final String SIGN_IN = "Sign In";
+    public static final String GET_STUDENT_CLASS_ID = "Get Student class ID";
+    public static final String GET_MISSING_SUBJECTS = "Get Missing Subjects";
+    public static final String GET_NEEDED_SUBJECTS = "Get Needed Subjects";
+    public static final String ADD_NEW_CLASS = "Add new class";
+    public static final String EDIT_CLASS = "Edit Class";
+    // Request types:
+    public static final String ADD_SUBJECT = "ADD";
+    public static final String RENAME_SUBJECT = "RENAME";
+    public static final String DELETE_SUBJECT = "DELETE";
 
     Button sign_up_btn;
     Button sign_in_btn;
@@ -72,10 +88,11 @@ public class MainActivity extends AppCompatActivity {
 
     // Methods for opening new pages with given parameters:
 
-    public static Intent open_student_main_page(Context ctx, String user_id, String user_name){
+    public static Intent open_student_main_page(Context ctx, String user_id, String user_name, String device_connection_string){
         Intent intent = new Intent(ctx, student_main_page.class);
         intent.putExtra(USER_ID, user_id);
         intent.putExtra(NAME, user_name);
+        intent.putExtra(DEVICE_CONNECTION_STRING, device_connection_string);
         return intent;
     }
 
@@ -91,23 +108,31 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(ctx, parent_main_page.class);
         intent.putExtra(USER_ID, user_id);
         intent.putExtra(NAME, user_name);
-        intent.putExtra(CHILDREN_IDS, children_ids );
+        intent.putExtra(CHILDREN_IDS, children_ids);
         return intent;
     }
 
-    public static Tuple<Boolean, String> log_sign_up_errors(Response<GenericResponse> response, String user_type){
+    public static Intent open_teacher_edit_class_page(Context ctx, String teacher_id, String class_name, ArrayList<String> subjects){
+        Intent intent = new Intent(ctx, teacher_edit_class_page.class);
+        intent.putExtra(USER_ID, teacher_id);
+        intent.putExtra(CLASSES_IDS, class_name);
+        intent.putExtra(SUBJECTS, subjects);
+        return intent;
+    }
+
+    public static Tuple<Boolean, String> log_request_errors(Response<GenericResponse> response, String user_type, String operation){
         if (!response.isSuccessful()) {
-            System.out.println("Error occurred in " + user_type + " sign up. Error code: " + response.code() + "Error message:" + response.message());
+            System.out.println("Error occurred in " + user_type + " " + operation + ". Error code: " + response.code() + "Error message:" + response.message());
             return new Tuple(false, response.message());
         }
         GenericResponse sign_up_response = response.body();
         String error_message = sign_up_response.getErrorMessage();
         boolean is_request_successful = sign_up_response.didRequestSucceed();
         if (is_request_successful){
-            System.out.println(user_type + " sign up was successful.");
+            System.out.println(user_type + " " + operation + " was successful.");
             return new Tuple(true, null);
         } else{
-            System.out.println(user_type + " sign up was not successful. Error is: " + error_message);
+            System.out.println(user_type + " " + operation + " was not successful. Error is: " + error_message);
             return new Tuple(false, error_message);
         }
     }
