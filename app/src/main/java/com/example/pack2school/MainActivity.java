@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String GET_MISSING_SUBJECTS = "Get Missing Subjects";
     public static final String GET_NEEDED_SUBJECTS = "Get Needed Subjects";
     public static final String ADD_NEW_CLASS = "Add new class";
+    public static final String SET_NEEDED_SUBJECTS = "Set needed subjects";
     public static final String EDIT_CLASS = "Edit Class";
     // Request types:
     public static final String ADD_SUBJECT = "ADD";

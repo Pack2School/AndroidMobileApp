@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/text_view"
         android:layout_marginTop="50dp"
-        android:text="Full Name:"
+        android:hint="Full Name:"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginEnd="@dimen/activity_horizontal_margin" />
 
@@ -32,7 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/name_input"
-        android:text="ID Number: "
+        android:hint="ID Number: "
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp" />
 
@@ -41,7 +41,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/id_input"
-        android:text="Child ID Number: "
+        android:hint="Child ID Number: "
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginEnd="@dimen/activity_horizontal_margin" />
 
@@ -60,7 +60,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/child_user_id_input_inst"
-        android:text="Email: "
+        android:hint="Email: "
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginEnd="@dimen/activity_horizontal_margin" />
 
@@ -69,7 +69,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/email_input"
-        android:text="Password: "
+        android:hint="Password: "
+        android:inputType="textPassword"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp" />
 
@@ -78,7 +79,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/password_input"
-        android:text="Repeat Password: "
+        android:hint="Repeat Password: "
+        android:inputType="textPassword"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp" />
 

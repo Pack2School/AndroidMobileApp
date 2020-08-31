@@ -18,7 +18,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-public class teacher_main_page extends AppCompatActivity{
+public class teacher_main_page extends AppCompatActivity implements DialogBox.ExampleDialogListener{
 
     Intent myIntent;
     String my_user_id_as_string;
@@ -48,11 +48,8 @@ public class teacher_main_page extends AppCompatActivity{
 
         if (classes_ids == null){
             classes_ids = new ArrayList<>();
-            classes_ids.add(MainActivity.NO_CLASSES_RECEIVED);
         }
-        else if(classes_ids.size() == 0){
-            classes_ids.add(MainActivity.NO_CLASSES_RECEIVED);
-        }
+
         List<String> choices = new ArrayList<>();
         for (String choice: classes_ids){
             choices.add(choice);
@@ -87,7 +84,7 @@ public class teacher_main_page extends AppCompatActivity{
         create_new_class_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                open_create_new_class_window();
+                open_create_new_class_dialog_box();
             }
         });
 
@@ -110,12 +107,6 @@ public class teacher_main_page extends AppCompatActivity{
                 open_edit_class_window(my_user_id_as_string, selected_class);
             }
         });
-    }
-
-    private void open_create_new_class_window(){
-        Intent intent = new Intent(this, teacher_create_class_page.class);
-        intent.putExtra(MainActivity.USER_ID, my_user_id_as_string);
-        startActivity(intent);
     }
 
     private void open_update_books_window(String teacher_id, String class_name){
@@ -216,6 +207,42 @@ public class teacher_main_page extends AppCompatActivity{
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
+    private void open_create_new_class_dialog_box() {
+        DialogBox dialogBox = new DialogBox();
+        dialogBox.show(getSupportFragmentManager(), "Create a new class");
+    }
+
+    @Override
+    public void applyTexts(String class_name) {
+        JsonPlaceHolderApi jsonPlaceHolderApi = MainActivity.getRetrofitJsonPlaceHolderApi();
+        SchoolClassRequest create_class = new SchoolClassRequest(my_user_id_as_string, class_name);
+        Call<GenericResponse> create_class_response = jsonPlaceHolderApi.AddNewClass(create_class);
+        create_class_response.enqueue(new Callback<GenericResponse>() {
+            @Override
+            public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
+                Tuple create_class_result = MainActivity.log_request_errors(response, MainActivity.TEACHER, MainActivity.ADD_NEW_CLASS);
+                if (create_class_result.getSucceeded()){
+                    GenericResponse request_response = response.body();
+                    String created_class_name = (String) request_response.getData();
+                    System.out.println("Created a new class named " + created_class_name);
+                    spinner_adapter.add(created_class_name);
+                    spinner_adapter.notifyDataSetChanged();
+                }
+                else{
+                    show_message("Error: " + create_class_result.getError_message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GenericResponse> call, Throwable t) {
+                String err_message = t.getMessage();
+                show_message("Error: " + err_message);
+                System.out.println("Enqueueing a sign up call failed! Failure message: \n" + err_message);
+            }
+        });
+    }
+}
+
 //    private void get_class_subjects_and_open_next_intent(String teacher_id, String class_name, Method func){
 //        // Get the subjects associated with the class  - and call the next function ONLY from within the background http call.
 //        // We do it in order to avoid a situation where a flow of a certain activity continues running, thinking it has some value
@@ -257,4 +284,3 @@ public class teacher_main_page extends AppCompatActivity{
 //            }
 //        });
 //    }
-}
