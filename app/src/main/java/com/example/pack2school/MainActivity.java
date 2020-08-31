@@ -16,28 +16,21 @@ import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity {
-
+    // Constants used by methods in all project;
     public static final String USER_TYPE = "userType";
     public static final String USER_ID = "userID";
     public static final String NAME = "userName";
     public static final String DEVICE_CONNECTION_STRING = "deviceConnectionString";
-    public static final String SCHOOL = "SCHOOL";
-    public static final String EMAIL = "userEmail";
     public static final String CLASSES_IDS = "classIDs";
     public static final String CHILDREN_IDS = "childrenIDs";
     public static final String INFO = "Info";
-    public static final String PASSWORD = "PASSWORD";
     public static final String STUDENT = "Student";
     public static final String TEACHER = "Teacher";
     public static final String PARENT = "Parent";
     public static final String SUBJECTS = "Subjects";
-    public static final String NO_INPUT = "NA";
     public static final String NO_CHILDREN_RECEIVED = "There are no children associated with your account.";
-    public static final String NO_CLASSES_RECEIVED = "There are no classes associated with your account.";
-    public static final String NO_SUBJECTS_RECEIVED = "There are no subjects associated with this class.";
     // Operation names:
     public static final String SIGN_UP = "Sign Up";
-    public static final String SIGN_IN = "Sign In";
     public static final String GET_STUDENT_CLASS_ID = "Get Student class ID";
     public static final String GET_MISSING_SUBJECTS = "Get Missing Subjects";
     public static final String GET_NEEDED_SUBJECTS = "Get Needed Subjects";

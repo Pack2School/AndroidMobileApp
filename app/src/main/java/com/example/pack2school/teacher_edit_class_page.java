@@ -77,7 +77,7 @@ public class teacher_edit_class_page extends AppCompatActivity {
         rename_subject_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(selected_subject_name_str.equals(MainActivity.NO_CLASSES_RECEIVED)){
+                if(selected_subject_name_str == null){
                     return;
                 }
                 new_subject_edit_text_str = new_subject_edit_text.getText().toString();
@@ -90,7 +90,7 @@ public class teacher_edit_class_page extends AppCompatActivity {
         delete_subject_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(selected_subject_name_str.equals(MainActivity.NO_CLASSES_RECEIVED)){
+                if(selected_subject_name_str == null){
                     return;
                 }
                 SubjectRequest delete_req = get_subject_request_for_edit_operation(my_class_name_as_string, selected_subject_name_str, null, MainActivity.DELETE_SUBJECT);

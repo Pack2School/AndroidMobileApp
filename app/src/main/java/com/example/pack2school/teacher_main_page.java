@@ -91,7 +91,7 @@ public class teacher_main_page extends AppCompatActivity implements DialogBox.Ex
         update_tomorrows_books_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (selected_class.equals(MainActivity.NO_CLASSES_RECEIVED)){
+                if (selected_class == null){
                     return;
                 }
                 open_update_books_window(my_user_id_as_string, selected_class);
@@ -101,7 +101,7 @@ public class teacher_main_page extends AppCompatActivity implements DialogBox.Ex
         edit_class_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (selected_class.equals(MainActivity.NO_CLASSES_RECEIVED)){
+                if (selected_class == null){
                     return;
                 }
                 open_edit_class_window(my_user_id_as_string, selected_class);
