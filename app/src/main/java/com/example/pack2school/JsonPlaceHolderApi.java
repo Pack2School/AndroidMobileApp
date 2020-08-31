@@ -38,4 +38,7 @@ public interface JsonPlaceHolderApi {
 
     @POST("EditSubject")
     Call<GenericResponse> EditSubject(@Body SubjectRequest body);
+
+    @POST("UpdateSubjectNecessity")
+    Call<GenericResponse> UpdateSubjectNecessity(@Body SubjectRequest body);
 }

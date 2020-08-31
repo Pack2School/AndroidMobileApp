@@ -1,6 +1,9 @@
 package com.example.pack2school;
 
 import androidx.appcompat.app.AppCompatActivity;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,10 +11,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,8 +72,40 @@ public class teacher_update_class_books_page extends AppCompatActivity {
         update_tomorrow_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SubjectRequest set_needed = new SubjectRequest(null,
+                        my_class_name_as_string,
+                        null,
+                        null,
+                        MainActivity.SET_NEEDED_SUBJECTS,
+                        selected_books,
+                        null);
+                JsonPlaceHolderApi jsonPlaceHolderApi = MainActivity.getRetrofitJsonPlaceHolderApi();
+                Call<GenericResponse> set_needed_response = jsonPlaceHolderApi.UpdateSubjectNecessity(set_needed);
+                set_needed_response.enqueue(new Callback<GenericResponse>() {
+                    @Override
+                    public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
+                        Tuple get_subjects_result = MainActivity.log_request_errors(response, MainActivity.TEACHER, set_needed.getRequestType());
+                        if (get_subjects_result.getSucceeded()){
+                            GenericResponse request_response = response.body();
+                            System.out.println("Entire response of EditSubject: " + request_response.getData());
+                        }
+                        else{
+                            show_message("Error: " + get_subjects_result.getError_message());
+                        }
+                    }
 
+                    @Override
+                    public void onFailure(Call<GenericResponse> call, Throwable t) {
+                        String err_message = t.getMessage();
+                        show_message("Error: " + err_message);
+                        System.out.println("Enqueueing a EditSubject call failed! Failure message: \n" + err_message);
+                    }
+                });
             }
         });
+    }
+
+    private void show_message(String message){
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 }
