@@ -97,7 +97,7 @@ public class sign_up_student_page extends AppCompatActivity {
     }
 
     private void call_open_student_main_page(String student_id, String student_name, String device_connection_string){
-        Intent intent =  MainActivity.open_student_main_page(this, student_id, student_name, device_connection_string);
+        Intent intent =  MainActivity.open_student_main_page(this, student_id, student_name, device_connection_string, MainActivity.SIGN_UP);
         startActivity(intent);
     }
 

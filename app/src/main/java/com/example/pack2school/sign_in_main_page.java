@@ -109,7 +109,7 @@ public class sign_in_main_page extends AppCompatActivity {
 
 
     private Intent get_open_student_main_page_intent(String user_id, String user_name){
-        Intent intent =  MainActivity.open_student_main_page(this, user_id, user_name, null);
+        Intent intent =  MainActivity.open_student_main_page(this, user_id, user_name, null, MainActivity.SIGN_IN);
         return intent;
     }
 

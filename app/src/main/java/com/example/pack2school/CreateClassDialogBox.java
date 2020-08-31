@@ -11,7 +11,7 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatDialogFragment;
 
-public class DialogBox extends AppCompatDialogFragment {
+public class CreateClassDialogBox extends AppCompatDialogFragment {
     private EditText editTextClassName;
     private ExampleDialogListener listener;
 
@@ -19,7 +19,7 @@ public class DialogBox extends AppCompatDialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.dialog_layout, null);
+        View view = inflater.inflate(R.layout.dialog_layout_create_class, null);
         builder.setView(view)
                 .setTitle("Choose a name for the new class")
                 .setNegativeButton("cancel", new DialogInterface.OnClickListener() {

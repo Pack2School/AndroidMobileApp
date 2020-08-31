@@ -1,6 +1,7 @@
 package com.example.pack2school;
 
 import androidx.appcompat.app.AppCompatActivity;
+import io.reactivex.Single;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -11,6 +12,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+
+import com.microsoft.signalr.HubConnection;
+import com.microsoft.signalr.HubConnectionBuilder;
 
 import java.util.ArrayList;
 
@@ -31,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String NO_CHILDREN_RECEIVED = "There are no children associated with your account.";
     // Operation names:
     public static final String SIGN_UP = "Sign Up";
+    public static final String SIGN_IN = "Sign in";
     public static final String GET_STUDENT_CLASS_ID = "Get Student class ID";
     public static final String GET_MISSING_SUBJECTS = "Get Missing Subjects";
     public static final String GET_NEEDED_SUBJECTS = "Get Needed Subjects";
@@ -41,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
     public static final String ADD_SUBJECT = "ADD";
     public static final String RENAME_SUBJECT = "RENAME";
     public static final String DELETE_SUBJECT = "DELETE";
+    public static final String ENTRANCE_TYPE = "App Entrance Type";
+    public static final String DataBaseAndScanUpdates ="DataBaseAndScanUpdates";
 
     Button sign_up_btn;
     Button sign_in_btn;
@@ -82,10 +89,11 @@ public class MainActivity extends AppCompatActivity {
 
     // Methods for opening new pages with given parameters:
 
-    public static Intent open_student_main_page(Context ctx, String user_id, String user_name, String device_connection_string){
+    public static Intent open_student_main_page(Context ctx, String user_id, String user_name, String device_connection_string, String op_type){
         Intent intent = new Intent(ctx, student_main_page.class);
         intent.putExtra(USER_ID, user_id);
         intent.putExtra(NAME, user_name);
+        intent.putExtra(ENTRANCE_TYPE, op_type);
         intent.putExtra(DEVICE_CONNECTION_STRING, device_connection_string);
         return intent;
     }
@@ -133,11 +141,22 @@ public class MainActivity extends AppCompatActivity {
 
     // SignalR general methods:
 
-    public Call<NegotiateSignalROutput> get_signalR_connection_call(String user_id, String device_id){
+    public static Call<NegotiateSignalROutput> get_signalR_connection_call(String user_id){
         JsonPlaceHolderApi jsonPlaceHolderApi = getRetrofitJsonPlaceHolderApi();
-        NegotiateSignalRInput signalR_input = new NegotiateSignalRInput(user_id, device_id);
+        NegotiateSignalRInput signalR_input = new NegotiateSignalRInput(user_id);
         Call<NegotiateSignalROutput> signalR_call = jsonPlaceHolderApi.getNegotiateConnectionFromSignalR(signalR_input);
         return signalR_call;
+    }
+
+    public static HubConnection get_hubconnection_from_successful_negotiate_response(Response<NegotiateSignalROutput> response){
+        HubConnection hubConnection;
+        NegotiateSignalROutput post = response.body();
+        String signalR_access_token = post.getAccessToken();
+        String signalR_url = post.getUrl();
+        // log the credentials to the 'run' console for debugging if needed:
+        System.out.println("Successfully completed negotiate. Returned: \n AccessToken: " + signalR_access_token + "\n Url: " + signalR_url);
+        hubConnection = HubConnectionBuilder.create(signalR_url).withAccessTokenProvider(Single.defer(() -> {return Single.just(signalR_access_token);})).build();
+        return hubConnection;
     }
 
     // Methods for different api calls:
