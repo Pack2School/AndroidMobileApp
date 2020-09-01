@@ -2,12 +2,10 @@ package com.example.pack2school;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import io.reactivex.Single;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,7 +15,6 @@ import android.widget.TextView;
 
 import com.microsoft.signalr.Action1;
 import com.microsoft.signalr.HubConnection;
-import com.microsoft.signalr.HubConnectionBuilder;
 
 import java.util.List;
 
@@ -27,6 +24,7 @@ public class student_main_page extends AppCompatActivity {
     Intent myIntent;
     String my_user_id_as_string;
     String my_name_as_string;
+    String my_class_name_as_string;
     String entrance_type;
     String device_connection_string;
     TextView welcome_text_view;
@@ -47,6 +45,11 @@ public class student_main_page extends AppCompatActivity {
         my_name_as_string = myIntent.getStringExtra(MainActivity.NAME);
         entrance_type = myIntent.getStringExtra(MainActivity.ENTRANCE_TYPE);
         device_connection_string = myIntent.getStringExtra(MainActivity.DEVICE_CONNECTION_STRING);
+        my_class_name_as_string = myIntent.getStringExtra(MainActivity.CLASSES_IDS);
+
+        all_subjects_text_view = (TextView)findViewById(R.id.all_subjects_text_view);
+        needed_subjects_text_view = (TextView)findViewById(R.id.needed_subjects_text_view);
+        missing_subjects_text_view = (TextView)findViewById(R.id.missing_subjects_text_view);
 
         welcome_text_view = (TextView)findViewById(R.id.welcome_text_view);
         if(entrance_type.equals(MainActivity.SIGN_UP)){
@@ -69,7 +72,14 @@ public class student_main_page extends AppCompatActivity {
         scan_my_bag_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MainActivity.call_backpack_scan_op(my_user_id_as_string);
+            }
+        });
 
+        set_sticker_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO - open window/popup for entering sticker name and choosing a book for it
             }
         });
     }
@@ -91,6 +101,18 @@ public class student_main_page extends AppCompatActivity {
                         System.out.println(MainActivity.DataBaseAndScanUpdates + " was invoked!");
                         DataBaseAndScanUpdates params = (DataBaseAndScanUpdates) param1;  //cast the object to our expected DataBaseAndScanUpdates class
                         System.out.println("Input from method: " + params);
+                        List<String> all_subjects = params.getAllSubjects();
+                        List<String> needed_subjects = params.getNeededSubjects();
+                        List<String> missing_subjects = params.getMissingSubjects();
+                        if(all_subjects != null){
+                            set_all_subjects(all_subjects);
+                        }
+                        if(needed_subjects != null){
+                            set_all_subjects(needed_subjects);
+                        }
+                        if(missing_subjects != null){
+                            set_all_subjects(missing_subjects);
+                        }
                     }
                 }, Object.class);
             }
@@ -102,13 +124,9 @@ public class student_main_page extends AppCompatActivity {
     }
 
     private void show_all_subjects(){
-
-    }
-
-    private void show_missing_subjects(){
         JsonPlaceHolderApi jsonPlaceHolderApi = MainActivity.getRetrofitJsonPlaceHolderApi();
         SubjectRequest edit_class = new SubjectRequest(null,
-                class_name,
+                my_class_name_as_string,
                 null,
                 null,
                 null,
@@ -118,16 +136,16 @@ public class student_main_page extends AppCompatActivity {
         edit_class_response.enqueue(new Callback<GenericResponse>() {
             @Override
             public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
-                Tuple get_subjects_result = MainActivity.log_request_errors(response, MainActivity.TEACHER, MainActivity.EDIT_CLASS);
+                Tuple get_subjects_result = MainActivity.log_request_errors(response, MainActivity.TEACHER, MainActivity.GET_ALL_SUBJECTS);
                 if (get_subjects_result.getSucceeded()){
                     GenericResponse request_response = response.body();
                     System.out.println("Entire response of GetAllSubjects: " + request_response.getData());
                     List<String> associated_subjects = (List<String>) request_response.getData();
-                    System.out.println("Got associated_subjects to class " + class_name + ": " + associated_subjects);
-                    _open_update_books_window(teacher_id, class_name, associated_subjects);
+                    System.out.println("Got associated_subjects to class " + my_class_name_as_string + ": " + associated_subjects);
+                    set_all_subjects(associated_subjects);
                 }
                 else{
-                    show_message("Error: " + get_subjects_result.getError_message());
+                    System.out.println("Error in GetAllSubjects: " + get_subjects_result.getError_message());
                 }
             }
 
@@ -139,7 +157,92 @@ public class student_main_page extends AppCompatActivity {
         });
     }
 
-    private void show_needed_subjects(){
+    private void show_missing_subjects(){
+        JsonPlaceHolderApi jsonPlaceHolderApi = MainActivity.getRetrofitJsonPlaceHolderApi();
+        SubjectRequest edit_class = new SubjectRequest(my_user_id_as_string,
+                my_class_name_as_string,
+                null,
+                null,
+                null,
+                null,
+                null);
+        Call<GenericResponse> edit_class_response = jsonPlaceHolderApi.GetMissingSubjects(edit_class);
+        edit_class_response.enqueue(new Callback<GenericResponse>() {
+            @Override
+            public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
+                Tuple get_subjects_result = MainActivity.log_request_errors(response, MainActivity.TEACHER, MainActivity.GET_MISSING_SUBJECTS);
+                if (get_subjects_result.getSucceeded()){
+                    GenericResponse request_response = response.body();
+                    System.out.println("Entire response of GetMissingSubjects: " + request_response.getData());
+                    List<String> associated_subjects = (List<String>) request_response.getData();
+                    System.out.println("Got missing subjects: " + associated_subjects);
+                    set_missing_subjects(associated_subjects);
+                }
+                else{
+                    System.out.println("Error in GetMissingSubjects: " + get_subjects_result.getError_message());
+                }
+            }
 
+            @Override
+            public void onFailure(Call<GenericResponse> call, Throwable t) {
+                String err_message = t.getMessage();
+                System.out.println("Enqueueing a GetMissingSubjects call failed! Failure message: \n" + err_message);
+            }
+        });
+    }
+
+    private void show_needed_subjects(){
+        JsonPlaceHolderApi jsonPlaceHolderApi = MainActivity.getRetrofitJsonPlaceHolderApi();
+        SubjectRequest edit_class = new SubjectRequest(my_user_id_as_string,
+                my_class_name_as_string,
+                null,
+                null,
+                null,
+                null,
+                null);
+        Call<GenericResponse> edit_class_response = jsonPlaceHolderApi.GetNeededSubjects(edit_class);
+        edit_class_response.enqueue(new Callback<GenericResponse>() {
+            @Override
+            public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
+                Tuple get_subjects_result = MainActivity.log_request_errors(response, MainActivity.TEACHER, MainActivity.GET_NEEDED_SUBJECTS);
+                if (get_subjects_result.getSucceeded()){
+                    GenericResponse request_response = response.body();
+                    System.out.println("Entire response of GetNeededSubjects: " + request_response.getData());
+                    List<String> associated_subjects = (List<String>) request_response.getData();
+                    System.out.println("Got missing subjects: " + associated_subjects);
+                    set_needed_subjects(associated_subjects);
+                }
+                else{
+                    System.out.println("Error in GetNeededSubjects: " + get_subjects_result.getError_message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GenericResponse> call, Throwable t) {
+                String err_message = t.getMessage();
+                System.out.println("Enqueueing a GetMissingSubjects call failed! Failure message: \n" + err_message);
+            }
+        });
+    }
+
+    private void set_all_subjects(List<String> subjects){
+        String ordered_subjects = MainActivity.order_list_items_to_txt(subjects);
+        String msg = "All subjects related to the class are:\n" + ordered_subjects;
+        System.out.println(msg);
+        all_subjects_text_view.setText(msg);
+    }
+
+    private void set_needed_subjects(List<String> subjects){
+        String ordered_subjects = MainActivity.order_list_items_to_txt(subjects);
+        String msg = "Needed subjects for tomorrow are:\n" + ordered_subjects;
+        System.out.println(msg);
+        needed_subjects_text_view.setText(msg);
+    }
+
+    private void set_missing_subjects(List<String> subjects){
+        String ordered_subjects = MainActivity.order_list_items_to_txt(subjects);
+        String msg = "Missing subjects are:\n" + ordered_subjects;
+        System.out.println(msg);
+        missing_subjects_text_view.setText(msg);
     }
 }

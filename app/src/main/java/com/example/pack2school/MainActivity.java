@@ -17,6 +17,8 @@ import com.microsoft.signalr.HubConnection;
 import com.microsoft.signalr.HubConnectionBuilder;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -39,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String GET_STUDENT_CLASS_ID = "Get Student class ID";
     public static final String GET_MISSING_SUBJECTS = "Get Missing Subjects";
     public static final String GET_NEEDED_SUBJECTS = "Get Needed Subjects";
+    public static final String GET_ALL_SUBJECTS = "Get All Subjects";
     public static final String ADD_NEW_CLASS = "Add new class";
     public static final String SET_NEEDED_SUBJECTS = "Set needed subjects";
     public static final String EDIT_CLASS = "Edit Class";
@@ -89,12 +92,13 @@ public class MainActivity extends AppCompatActivity {
 
     // Methods for opening new pages with given parameters:
 
-    public static Intent open_student_main_page(Context ctx, String user_id, String user_name, String device_connection_string, String op_type){
+    public static Intent open_student_main_page(Context ctx, String user_id, String user_name, String device_connection_string, String op_type, String class_name){
         Intent intent = new Intent(ctx, student_main_page.class);
         intent.putExtra(USER_ID, user_id);
         intent.putExtra(NAME, user_name);
         intent.putExtra(ENTRANCE_TYPE, op_type);
         intent.putExtra(DEVICE_CONNECTION_STRING, device_connection_string);
+        intent.putExtra(CLASSES_IDS, class_name);
         return intent;
     }
 
@@ -170,6 +174,10 @@ public class MainActivity extends AppCompatActivity {
         return jsonPlaceHolderApi;
     }
 
+    public static void call_backpack_scan_op(String user_id){
+
+    }
+
     // General Utils:
 
     public static boolean are_passwords_aligned(String first, String second){
@@ -177,6 +185,28 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
         return true;
+    }
+
+    public static void log_list_items(List<String> list_items, String user_type){
+        if(list_items == null){
+            System.out.println(user_type + " received an empty list of items.");
+            return;
+        }
+        System.out.println(user_type + " received the following list items: (total of " + list_items.size() + ")\n");
+        for(String item: list_items){
+            System.out.println(item + "\n");
+        }
+    }
+
+    public static String order_list_items_to_txt(List<String> str_list){
+        String combined = "";
+        Collections.sort(str_list);
+        if(str_list.size() > 0){
+            for(String item: str_list){
+                combined = combined + "\n" + item;
+            }
+        }
+        return combined;
     }
 }
 

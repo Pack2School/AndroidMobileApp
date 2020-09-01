@@ -67,16 +67,19 @@ public class sign_in_main_page extends AppCompatActivity {
                             String user_name = (String) response_data.get(MainActivity.NAME);
 
                             if(user_type.equals(MainActivity.STUDENT)){
-                                next_intent = get_open_student_main_page_intent(id_input_str, user_name);
+                                List<String> user_classes = (List<String>) response_data.get(MainActivity.INFO);
+                                MainActivity.log_list_items(user_classes, user_type);
+                                String user_class = user_classes.get(0);
+                                next_intent = get_open_student_main_page_intent(id_input_str, user_name, user_class);
                             }
                             else if(user_type.equals(MainActivity.TEACHER)){
                                 List<String> user_classes = (List<String>) response_data.get(MainActivity.INFO);
-                                log_list_items(user_classes, user_type);
+                                MainActivity.log_list_items(user_classes, user_type);
                                 next_intent = get_open_teacher_main_page_intent(id_input_str, user_name, user_classes);
                             }
                             else if(user_type.equals(MainActivity.PARENT)){
                                 List<String> childrenIDs = (List<String>) response_data.get(MainActivity.INFO);
-                                log_list_items(childrenIDs, user_type);
+                                MainActivity.log_list_items(childrenIDs, user_type);
                                 next_intent = get_open_parent_main_page_intent(id_input_str, user_name, childrenIDs);
                             }
                             else{
@@ -108,8 +111,8 @@ public class sign_in_main_page extends AppCompatActivity {
     }
 
 
-    private Intent get_open_student_main_page_intent(String user_id, String user_name){
-        Intent intent =  MainActivity.open_student_main_page(this, user_id, user_name, null, MainActivity.SIGN_IN);
+    private Intent get_open_student_main_page_intent(String user_id, String user_name, String class_name){
+        Intent intent =  MainActivity.open_student_main_page(this, user_id, user_name, null, MainActivity.SIGN_IN, class_name);
         return intent;
     }
 
@@ -125,16 +128,5 @@ public class sign_in_main_page extends AppCompatActivity {
         casted_classes_ids.addAll(classesIDs);
         Intent intent =  MainActivity.open_teacher_main_page(this, user_id, user_name, casted_classes_ids);
         return intent;
-    }
-
-    private void log_list_items(List<String> list_items, String user_type){
-        if(list_items == null){
-            System.out.println(user_type + " received an empty list of items.");
-            return;
-        }
-        System.out.println(user_type + " received the following list items: (total of " + list_items.size() + ")\n");
-        for(String item: list_items){
-            System.out.println(item + "\n");
-        }
     }
 }

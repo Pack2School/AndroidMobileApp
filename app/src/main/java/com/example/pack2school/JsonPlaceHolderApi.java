@@ -1,11 +1,10 @@
 package com.example.pack2school;
 
-import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
-import retrofit2.http.Query;
+
 
 public interface JsonPlaceHolderApi {
     // For example if the base url is:
@@ -41,4 +40,7 @@ public interface JsonPlaceHolderApi {
 
     @POST("UpdateSubjectNecessity")
     Call<GenericResponse> UpdateSubjectNecessity(@Body SubjectRequest body);
+
+    @POST("SendScanOperation")
+    Call<GenericResponse> SendScanOperation(@Body SubjectRequest body);
 }
