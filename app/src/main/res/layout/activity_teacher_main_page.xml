@@ -41,7 +41,7 @@
             android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="If you want to add a new class, just press CREATE NEW CLASS.\nIf you wish to update the books for an existing class, or to edit the class subjects, please choose a class from the drop down menu and then press UPDATE TOMORROWS BOOKS or EDIT CLASS."
+            android:text="You can add a new class.\nOr, if you wish to update the books for an existing class, or to edit the class subjects, please choose a class from the drop down menu and then press on the option you desire."
             android:textSize="20dp"
             android:layout_below="@+id/user_id_text_view"
             android:layout_marginStart="16dp"

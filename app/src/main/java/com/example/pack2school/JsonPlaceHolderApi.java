@@ -20,7 +20,7 @@ public interface JsonPlaceHolderApi {
     @POST("SignIn")
     Call<GenericResponse> signIn(@Body UserRequest body);
 
-    @POST("GetChildInfo")
+    @POST("GetChildSubjectsTableName")
     Call<GenericResponse> GetStudentClassTableName(@Body UserRequest body);
 
     @POST("GetNeededSubjects")
@@ -43,4 +43,7 @@ public interface JsonPlaceHolderApi {
 
     @POST("SendScanOperation")
     Call<GenericResponse> SendScanOperation(@Body SubjectRequest body);
+
+    @POST("UpdateSubjectStickers")
+    Call<GenericResponse> UpdateSubjectStickers(@Body SubjectRequest body);
 }

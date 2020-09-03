@@ -3,6 +3,7 @@ package com.example.pack2school;
 import androidx.appcompat.app.AppCompatActivity;
 import io.reactivex.Single;
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -38,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
     // Operation names:
     public static final String SIGN_UP = "Sign Up";
     public static final String SIGN_IN = "Sign in";
+    public static final String SCAN = "Scan";
+    public static final String SET_STICKER = "Set Sticker";
     public static final String GET_STUDENT_CLASS_ID = "Get Student class ID";
     public static final String GET_MISSING_SUBJECTS = "Get Missing Subjects";
     public static final String GET_NEEDED_SUBJECTS = "Get Needed Subjects";
@@ -174,8 +177,33 @@ public class MainActivity extends AppCompatActivity {
         return jsonPlaceHolderApi;
     }
 
-    public static void call_backpack_scan_op(String user_id){
+    public static void call_backpack_scan_op(String user_id, String user_type){
+        JsonPlaceHolderApi jsonPlaceHolderApi = getRetrofitJsonPlaceHolderApi();
+        SubjectRequest scan_request = new SubjectRequest(user_id,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null);
+        Call<GenericResponse> scan_response = jsonPlaceHolderApi.SendScanOperation(scan_request);
+        scan_response.enqueue(new Callback<GenericResponse>() {
+            @Override
+            public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
+                Tuple get_subjects_result = log_request_errors(response, user_type, SCAN);
+                if (get_subjects_result.getSucceeded()){
+                    System.out.println("Successfully completed scan.");
+                }
+                else{
+                    System.out.println("Error while sending scan command: " + get_subjects_result.getError_message());
+                }
+            }
 
+            @Override
+            public void onFailure(Call<GenericResponse> call, Throwable t) {
+                System.out.println("Enqueueing a SendScanOperation call failed! Failure message: \n" + t.getMessage());
+            }
+        });
     }
 
     // General Utils:

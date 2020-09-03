@@ -10,16 +10,21 @@ import retrofit2.Response;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.microsoft.signalr.Action1;
 import com.microsoft.signalr.HubConnection;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
-public class student_main_page extends AppCompatActivity {
+public class student_main_page extends AppCompatActivity implements SetStickerDialogBox.ExampleDialogListener{
 
     Intent myIntent;
     String my_user_id_as_string;
@@ -34,6 +39,10 @@ public class student_main_page extends AppCompatActivity {
     Button scan_my_bag_btn;
     Button set_sticker_btn;
     HubConnection hubConnection;
+    List<String> all_subjects;
+    Spinner selected_subject_spinner;
+    ArrayAdapter<String> spinner_adapter;
+    String selected_subject;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,20 +75,49 @@ public class student_main_page extends AppCompatActivity {
         show_all_subjects();
         show_needed_subjects();
         show_missing_subjects();
-        connect_to_signalR_and_wait_for_updates(); // in this method we also automatically trigger a scan - which in turn will trigger the method we are listening to.
+        connect_to_signalR_and_wait_for_updates();
 
+        // Set spinner for stickers setup:
+        selected_subject_spinner = (Spinner) findViewById(R.id.selected_subject_spinner);
+        List<String> choices = new ArrayList<>();
+        if (all_subjects != null){
+            for (String choice: all_subjects){
+                choices.add(choice);
+            }
+        }
+        spinner_adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, choices);
+        spinner_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        selected_subject_spinner.setAdapter(spinner_adapter);
+        selected_subject_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selected_subject = (String) parent.getSelectedItem();
+                displaySelectedSubject(selected_subject);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         scan_my_bag_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainActivity.call_backpack_scan_op(my_user_id_as_string);
+                MainActivity.call_backpack_scan_op(my_user_id_as_string, MainActivity.STUDENT);
             }
         });
 
         set_sticker_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO - open window/popup for entering sticker name and choosing a book for it
+                if (all_subjects == null || all_subjects.size() == 0){ // someone pressed the button before the first http/signalR returned or really nothing there
+                    show_message("There are currently no subjects associated with you class, so you can't define stickers yet :(");
+                    return;
+                }
+                open_set_sticker_dialog_box();
+
             }
         });
     }
@@ -101,17 +139,17 @@ public class student_main_page extends AppCompatActivity {
                         System.out.println(MainActivity.DataBaseAndScanUpdates + " was invoked!");
                         DataBaseAndScanUpdates params = (DataBaseAndScanUpdates) param1;  //cast the object to our expected DataBaseAndScanUpdates class
                         System.out.println("Input from method: " + params);
-                        List<String> all_subjects = params.getAllSubjects();
+                        all_subjects = params.getAllSubjects();
                         List<String> needed_subjects = params.getNeededSubjects();
                         List<String> missing_subjects = params.getMissingSubjects();
                         if(all_subjects != null){
                             set_all_subjects(all_subjects);
                         }
                         if(needed_subjects != null){
-                            set_all_subjects(needed_subjects);
+                            set_needed_subjects(needed_subjects);
                         }
                         if(missing_subjects != null){
-                            set_all_subjects(missing_subjects);
+                            set_missing_subjects(missing_subjects);
                         }
                     }
                 }, Object.class);
@@ -140,9 +178,9 @@ public class student_main_page extends AppCompatActivity {
                 if (get_subjects_result.getSucceeded()){
                     GenericResponse request_response = response.body();
                     System.out.println("Entire response of GetAllSubjects: " + request_response.getData());
-                    List<String> associated_subjects = (List<String>) request_response.getData();
-                    System.out.println("Got associated_subjects to class " + my_class_name_as_string + ": " + associated_subjects);
-                    set_all_subjects(associated_subjects);
+                    all_subjects = (List<String>) request_response.getData();
+                    System.out.println("Got associated_subjects to class " + my_class_name_as_string + ": " + all_subjects);
+                    set_all_subjects(all_subjects);
                 }
                 else{
                     System.out.println("Error in GetAllSubjects: " + get_subjects_result.getError_message());
@@ -230,6 +268,11 @@ public class student_main_page extends AppCompatActivity {
         String msg = "All subjects related to the class are:\n" + ordered_subjects;
         System.out.println(msg);
         all_subjects_text_view.setText(msg);
+        spinner_adapter.clear();
+        for (String item: subjects){
+            spinner_adapter.add(item);
+        }
+        spinner_adapter.notifyDataSetChanged();
     }
 
     private void set_needed_subjects(List<String> subjects){
@@ -244,5 +287,54 @@ public class student_main_page extends AppCompatActivity {
         String msg = "Missing subjects are:\n" + ordered_subjects;
         System.out.println(msg);
         missing_subjects_text_view.setText(msg);
+    }
+
+    private void displaySelectedSubject(String subject_name) {
+        String SelectedData = "Selected subject: " + subject_name;
+        show_message(SelectedData);
+    }
+
+    private void show_message(String message){
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+
+    private void open_set_sticker_dialog_box() {
+        SetStickerDialogBox dialogBox = new SetStickerDialogBox();
+        dialogBox.show(getSupportFragmentManager(), "Set sticker");
+    }
+
+    @Override
+    public void applyTexts(String sticker_id) {
+        JsonPlaceHolderApi jsonPlaceHolderApi = MainActivity.getRetrofitJsonPlaceHolderApi();
+        SubjectRequest edit_class = new SubjectRequest(my_user_id_as_string,
+                my_class_name_as_string,
+                selected_subject,
+                null,
+                null,
+                null,
+                sticker_id);
+        Call<GenericResponse> edit_class_response = jsonPlaceHolderApi.UpdateSubjectStickers(edit_class);
+        edit_class_response.enqueue(new Callback<GenericResponse>() {
+            @Override
+            public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
+                Tuple update_subjects_result = MainActivity.log_request_errors(response, MainActivity.STUDENT, MainActivity.SET_STICKER);
+                if (update_subjects_result.getSucceeded()){
+                    System.out.println("Successfully ran UpdateSubjectStickers");
+                    show_message("Successfully updated sticker!");
+                }
+                else{
+                    String err_message = update_subjects_result.getError_message();
+                    System.out.println("Error in UpdateSubjectStickers: " + err_message);
+                    show_message("There was a problem updating the sticker :(\nError is: " + err_message);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GenericResponse> call, Throwable t) {
+                String err_message = t.getMessage();
+                System.out.println("Enqueueing a GetMissingSubjects call failed! Failure message: \n" + err_message);
+                show_message("There was a problem updating the sticker :(\nError is: " + err_message);
+            }
+        });
     }
 }
