@@ -18,7 +18,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-public class teacher_main_page extends AppCompatActivity implements DialogBox.ExampleDialogListener{
+public class teacher_main_page extends AppCompatActivity implements CreateClassDialogBox.ExampleDialogListener{
 
     Intent myIntent;
     String my_user_id_as_string;
@@ -208,7 +208,7 @@ public class teacher_main_page extends AppCompatActivity implements DialogBox.Ex
     }
 
     private void open_create_new_class_dialog_box() {
-        DialogBox dialogBox = new DialogBox();
+        CreateClassDialogBox dialogBox = new CreateClassDialogBox();
         dialogBox.show(getSupportFragmentManager(), "Create a new class");
     }
 

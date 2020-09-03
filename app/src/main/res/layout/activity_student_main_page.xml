@@ -8,81 +8,94 @@
     android:orientation="vertical"
     tools:context=".student_main_page">
 
-    <TextView
-        android:id="@+id/main_headline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=" Student Main Page"
-        android:textSize="30dp"
-        android:layout_centerVertical="true"
-        android:layout_centerInParent="true" />
-
-    <TextView
-        android:id="@+id/user_id_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/main_headline"
-        android:layout_marginTop="25dp"
-        android:text=" ERROR no user id value set"
-        android:textSize="30sp" />
-
-
-    <TableLayout
-        android:id="@+id/books_table"
-        android:layout_width="wrap_content"
-        android:layout_height="44dp"
-        android:layout_marginHorizontal="10dp"
-        android:layout_marginVertical="30dp">
-
-        <TableRow>
-
-            <TextView
-                android:layout_marginRight="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="1dp"
-                android:layout_marginBottom="1dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="Book Name"
-                android:textSize="15dp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:textSize="15dp"
-                android:layout_marginRight="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="1dp"
-                android:layout_marginBottom="1dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="Is it in the bag?"
-                android:textStyle="bold" />
-
-            <TextView
-                android:textSize="15dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="1dp"
-                android:layout_marginBottom="1dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="Is it needed for tommorow?"
-                android:textStyle="bold" />
-        </TableRow>
-
-    </TableLayout>
-
-    <Button
-        android:id="@+id/scan_my_bag_btn"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/books_table"
-        android:text="Scan My Backpack"
-        android:layout_marginTop="30dp"
-        android:layout_gravity="center_horizontal|center"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
-        android:layout_marginEnd="@dimen/activity_horizontal_margin" />
+        android:layout_marginTop="25dp">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/welcome_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="Welcome"
+                android:textSize="25dp" />
+
+            <TextView
+                android:id="@+id/all_subjects_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/welcome_text_view"
+                android:text="All class subjects are:"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/needed_subjects_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/all_subjects_text_view"
+                android:text="Needed subjects are:"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/missing_subjects_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/needed_subjects_text_view"
+                android:text="Missing subjects are:"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/spinner_inst_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="30dp"
+                android:layout_below="@+id/missing_subjects_text_view"
+                android:text="If you wish to set a sticker, choose a subject and then press the configure sticker button:"
+                android:textSize="20dp" />
+
+            <Spinner
+                android:id="@+id/selected_subject_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/spinner_inst_text_view"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="5dp"/>
+
+            <Button
+                android:id="@+id/scan_my_bag_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/selected_subject_spinner"
+                android:text="Scan My Backpack"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center_horizontal|center"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginEnd="16dp" />
+
+            <Button
+                android:id="@+id/set_sticker_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/scan_my_bag_btn"
+                android:text="Configure Stickers"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center_horizontal|center"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp" />
+
+        </RelativeLayout>
+    </ScrollView>
 </LinearLayout>

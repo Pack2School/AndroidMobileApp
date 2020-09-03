@@ -8,20 +8,21 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatDialogFragment;
 
-public class DialogBox extends AppCompatDialogFragment {
-    private EditText editTextClassName;
-    private ExampleDialogListener listener;
+public class SetStickerDialogBox extends AppCompatDialogFragment {
+    private EditText stickerID;
+    private SetStickerDialogBox.ExampleDialogListener listener;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.dialog_layout, null);
+        View view = inflater.inflate(R.layout.dialog_layout_set_sticker, null);
         builder.setView(view)
-                .setTitle("Choose a name for the new class")
+                .setTitle("Enter the Sticker ID")
                 .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -30,11 +31,11 @@ public class DialogBox extends AppCompatDialogFragment {
                 .setPositiveButton("ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        String class_name = editTextClassName.getText().toString();
-                        listener.applyTexts(class_name);
+                        String sticker_id = stickerID.getText().toString();
+                        listener.applyTexts(sticker_id);
                     }
                 });
-        editTextClassName = view.findViewById(R.id.new_class_name_edit_text);
+        stickerID = view.findViewById(R.id.sticker_id_edit_text);
         return builder.create();
     }
 
@@ -42,7 +43,7 @@ public class DialogBox extends AppCompatDialogFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            listener = (ExampleDialogListener) context;
+            listener = (SetStickerDialogBox.ExampleDialogListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString() +
                     "must implement ExampleDialogListener");
@@ -50,6 +51,6 @@ public class DialogBox extends AppCompatDialogFragment {
     }
 
     public interface ExampleDialogListener {
-        void applyTexts(String class_name);
+        void applyTexts(String sticker_id);
     }
 }

@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -78,7 +79,10 @@ public class sign_up_student_page extends AppCompatActivity {
                             System.out.println("Entered a successful Student sign up - extracted Map<String, Object>.");
                             String device_connection_string = (String) response_data.get(MainActivity.DEVICE_CONNECTION_STRING);
                             System.out.println("Student received following device connection string: \n" + device_connection_string);
-                            call_open_student_main_page(id_input_str, name_input_str, device_connection_string);
+                            List<String> user_classes = (List<String>) response_data.get(MainActivity.INFO);
+                            MainActivity.log_list_items(user_classes, type_input_str);
+                            String user_class = user_classes.get(0);
+                            call_open_student_main_page(id_input_str, name_input_str, device_connection_string, user_class);
                         }
                         else{
                             show_message("Error: " + sign_up_result.getError_message());
@@ -96,8 +100,8 @@ public class sign_up_student_page extends AppCompatActivity {
         });
     }
 
-    private void call_open_student_main_page(String student_id, String student_name, String device_connection_string){
-        Intent intent =  MainActivity.open_student_main_page(this, student_id, student_name, device_connection_string);
+    private void call_open_student_main_page(String student_id, String student_name, String device_connection_string, String class_name){
+        Intent intent =  MainActivity.open_student_main_page(this, student_id, student_name, device_connection_string, MainActivity.SIGN_UP, class_name);
         startActivity(intent);
     }
 
