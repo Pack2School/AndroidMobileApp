@@ -79,7 +79,7 @@ public class sign_up_student_page extends AppCompatActivity {
                             System.out.println("Entered a successful Student sign up - extracted Map<String, Object>.");
                             String device_connection_string = (String) response_data.get(MainActivity.DEVICE_CONNECTION_STRING);
                             System.out.println("Student received following device connection string: \n" + device_connection_string);
-                            List<String> user_classes = (List<String>) response_data.get(MainActivity.INFO);
+                            List<String> user_classes = (List<String>) response_data.get(MainActivity.SUBJECTS_TABLE_NAME);
                             MainActivity.log_list_items(user_classes, type_input_str);
                             String user_class = user_classes.get(0);
                             call_open_student_main_page(id_input_str, name_input_str, device_connection_string, user_class);

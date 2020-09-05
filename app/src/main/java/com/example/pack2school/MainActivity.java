@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String USER_ID = "userID";
     public static final String NAME = "userName";
     public static final String DEVICE_CONNECTION_STRING = "deviceConnectionString";
+    public static final String SUBJECTS_TABLE_NAME = "subjectsTablesNames";
     public static final String CLASSES_IDS = "classIDs";
     public static final String CHILDREN_IDS = "childrenIDs";
     public static final String INFO = "Info";
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     // Operation names:
     public static final String SIGN_UP = "Sign Up";
     public static final String SIGN_IN = "Sign in";
+    public static final String PARENT_CHILD_CHECKUP = "Parent child checkup";
     public static final String SCAN = "Scan";
     public static final String SET_STICKER = "Set Sticker";
     public static final String GET_STUDENT_CLASS_ID = "Get Student class ID";
@@ -237,53 +239,3 @@ public class MainActivity extends AppCompatActivity {
         return combined;
     }
 }
-
-
-
-
-
-//        //Example how to handle a call from the server, for example if the server sends:
-//        // "SetButtonValue", new_val
-//        // Where new_val is a Float value: (commented out since I don really use f;oats anywhere..
-//        // so it's just an example
-//        hubConnection.on("SetButtonValue",(new_val) -> {
-//            sign_up_btn.setText("new_val");
-//        }, Float.class);
-
-//        //Example how to handle a call from the server, for example if the server sends:
-//        // "SetButtonValue", new_val
-//        // Where new_val is a string value:
-//        hubConnection.on("SetButtonValue", new Action1<String>() {
-//            @Override
-//            public void invoke(String new_val) {
-//                sign_up_btn.setText(new_val);
-//            }
-//        }, String.class);
-//        //Event handler for button press (from within our app..) that starts or stops the
-//        // connection to signalR:
-//        sign_up_btn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if(sign_up_btn.getText().toString().toLowerCase().equals("enter pack2school"))
-//                {
-//                    if (hubConnection.getConnectionState() == HubConnectionState.DISCONNECTED)
-//                    {
-//                        hubConnection.start();
-//                        sign_up_btn.setText("leave");
-//                    }
-//                }
-//                else if (sign_up_btn.getText().toString().toLowerCase().equals("leave"))
-//                {
-//                    if(hubConnection.getConnectionState() == HubConnectionState.CONNECTED)
-//                    {
-//                        //Sending something to the connection example:
-//                        float param_1 = 1;
-//                        float param_2 = 2;
-//                        hubConnection.send("SetNewState", param_1, param_2);
-//                        hubConnection.stop();
-//                        sign_up_btn.setText("enter pack2school");
-//                    }
-//                }
-//            }
-//        });
-//    }

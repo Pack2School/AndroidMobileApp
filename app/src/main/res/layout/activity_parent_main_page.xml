@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".parent_main_page"
-    android:background="@color/colorAccent">
+    android:background="@color/cardview_light_background">
 
     <TextView
         android:id="@+id/user_name_text_view"
@@ -34,7 +34,7 @@
         android:id="@+id/instructions_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Please choose a child from the list below, and hit the SCAN BACKPACK button in order to see your child's updated backpack content."
+        android:text="Please choose a child from the list below, and hit the SHOW STATUS button in order to see your child's updated backpack content."
         android:textSize="15dp"
         android:layout_marginStart="16dp"
         android:layout_below="@+id/user_id_text_view"
@@ -50,37 +50,12 @@
         android:layout_marginEnd="16dp"
         android:layout_marginTop="5dp"/>
 
-    <TextView
-        android:id="@+id/needed_books_text_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Needed books: "
-        android:textSize="20dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_below="@+id/selected_child_spinner"
-        android:layout_centerInParent="false" />
-
-    <TextView
-        android:id="@+id/missing_books_text_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Missing books: "
-        android:textSize="20dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_below="@+id/needed_books_text_view"
-        android:layout_centerInParent="false" />
-
-
     <Button
         android:id="@+id/add_children_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Add another child (disabled)"
-        android:layout_below="@+id/missing_books_text_view"
+        android:layout_below="@+id/selected_child_spinner"
         android:layout_marginTop="200dp"
         android:layout_gravity="center_horizontal|center"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
@@ -91,7 +66,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/add_children_btn"
-        android:text="Scan Backpack"
+        android:text="Show Status"
         android:layout_marginTop="5dp"
         android:layout_gravity="center_horizontal|center"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
