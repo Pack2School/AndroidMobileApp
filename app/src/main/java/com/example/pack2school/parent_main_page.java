@@ -26,9 +26,7 @@ public class parent_main_page extends AppCompatActivity {
     String my_user_name_as_string;
     TextView user_name_text_view;
     TextView user_id_text_view;
-    TextView needed_books_text_view;
-    TextView missing_books_text_view;
-    Button scan_backpack_btn;
+    Button show_status_btn;
     Spinner choose_child_spinner;
     String selected_child;
     String selected_child_class_id;
@@ -43,15 +41,13 @@ public class parent_main_page extends AppCompatActivity {
         my_user_name_as_string = myIntent.getStringExtra(MainActivity.NAME);
         user_name_text_view = (TextView)findViewById(R.id.user_name_text_view);
         user_id_text_view = (TextView)findViewById(R.id.user_id_text_view);
-        needed_books_text_view = (TextView)findViewById(R.id.needed_books_text_view);
-        missing_books_text_view = (TextView)findViewById(R.id.missing_books_text_view);
 
         user_name_text_view.setText("Welcome " + my_user_name_as_string);
-        user_id_text_view.setText("User ID: " + my_user_id_as_string + ", Parent.");
+        user_id_text_view.setText("User ID: " + my_user_id_as_string);
 
         List<String> children_ids = (List<String>) myIntent.getStringArrayListExtra(MainActivity.CHILDREN_IDS);
 
-        if (children_ids == null){
+        if (children_ids == null || children_ids.size() == 0){
             children_ids = new ArrayList<>();
             children_ids.add(MainActivity.NO_CHILDREN_RECEIVED);
         }
@@ -77,10 +73,9 @@ public class parent_main_page extends AppCompatActivity {
 
             }
         });
-
-        // Set up the btn to send the correct http:
-        scan_backpack_btn = (Button) findViewById(R.id.scan_my_bag_btn);
-        scan_backpack_btn.setOnClickListener(new View.OnClickListener() {
+        
+        show_status_btn = (Button) findViewById(R.id.scan_my_bag_btn);
+        show_status_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (selected_child.equals(MainActivity.NO_CHILDREN_RECEIVED)){
@@ -110,6 +105,7 @@ public class parent_main_page extends AppCompatActivity {
                             List<String> response_data = (List<String>) response_body.getData(); // should be a list of size 1. If it's not - we should have received an error.
                             selected_child_class_id = response_data.get(0);
                             System.out.println("Parent successfully got child's class ID: " + selected_child_class_id);
+                            get_open_student_main_page_intent(selected_child ,my_user_name_as_string, selected_child_class_id);
                         }
                         else{
                             show_message("Error: " + sign_up_result.getError_message());
@@ -119,61 +115,6 @@ public class parent_main_page extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<GenericResponse> call, Throwable t) {
                         String internal_err_message = "Enqueueing a GetStudentClassTableName call failed! Failure message: \n" + t.getMessage();
-                        String err_message = "Error: " + t.getMessage();
-                        log_message(err_message, internal_err_message);
-                    }
-                });
-
-                // Now you have selected_child_class_id - and you can ask to know this child's backpack status..
-                SubjectRequest request_for_student_subjects = new SubjectRequest(selected_child,
-                        selected_child_class_id,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null);
-
-                Call<GenericResponse> needed_subjects_request = jsonPlaceHolderApi.GetNeededSubjects(request_for_student_subjects);
-                needed_subjects_request.enqueue(new Callback<GenericResponse>() {
-                    @Override
-                    public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
-                        Tuple call_result = MainActivity.log_request_errors(response, MainActivity.PARENT, MainActivity.GET_NEEDED_SUBJECTS);
-                        if (call_result.getSucceeded()){
-                            GenericResponse response_body = response.body();
-                            List<String> response_data = (List<String>) response_body.getData();
-                            needed_books_text_view.setText("Needed books are: \n" + response_data);
-                        }
-                        else{
-                            show_message("Error: " + call_result.getError_message());
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<GenericResponse> call, Throwable t) {
-                        String internal_err_message = "Enqueueing a GetNeededSubjects call failed! Failure message: \n" + t.getMessage();
-                        String err_message = "Error: " + t.getMessage();
-                        log_message(err_message, internal_err_message);
-                    }
-                });
-
-                Call<GenericResponse> scan_request = jsonPlaceHolderApi.GetMissingSubjects(request_for_student_subjects);
-                scan_request.enqueue(new Callback<GenericResponse>() {
-                    @Override
-                    public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
-                        Tuple call_result = MainActivity.log_request_errors(response, MainActivity.PARENT, MainActivity.GET_MISSING_SUBJECTS);
-                        if (call_result.getSucceeded()){
-                            GenericResponse response_body = response.body();
-                            List<String> response_data = (List<String>) response_body.getData();
-                            missing_books_text_view.setText("Missing books are: \n" + response_data);
-                        }
-                        else{
-                            show_message("Error: " + call_result.getError_message());
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<GenericResponse> call, Throwable t) {
-                        String internal_err_message = "Enqueueing a GetMissingSubjects call failed! Failure message: \n" + t.getMessage();
                         String err_message = "Error: " + t.getMessage();
                         log_message(err_message, internal_err_message);
                     }
@@ -194,5 +135,10 @@ public class parent_main_page extends AppCompatActivity {
 
     private void show_message(String message){
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+
+    private void get_open_student_main_page_intent(String student_id, String user_name, String class_name){
+        Intent intent = MainActivity.open_student_main_page(this, student_id, user_name, null,  MainActivity.PARENT_CHILD_CHECKUP, class_name);
+        startActivity(intent);
     }
 }

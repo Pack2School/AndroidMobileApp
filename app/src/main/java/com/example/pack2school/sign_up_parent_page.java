@@ -91,7 +91,8 @@ public class sign_up_parent_page extends AppCompatActivity {
     }
 
     private void call_open_parent_main_page(String student_id, String student_name, List<String> children_ids){
-        ArrayList<String> casted_children_ids = new ArrayList(Arrays.asList(children_ids));
+        ArrayList<String> casted_children_ids = new ArrayList<>(children_ids.size());
+        casted_children_ids.addAll(children_ids);
         Intent intent = MainActivity.open_parent_main_page(this, student_id, student_name, casted_children_ids);
         startActivity(intent);
     }

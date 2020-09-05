@@ -40,6 +40,8 @@ public class student_main_page extends AppCompatActivity implements SetStickerDi
     Button set_sticker_btn;
     HubConnection hubConnection;
     List<String> all_subjects;
+    List<String> needed_subjects;
+    List<String> missing_subjects;
     Spinner selected_subject_spinner;
     ArrayAdapter<String> spinner_adapter;
     String selected_subject;
@@ -64,7 +66,10 @@ public class student_main_page extends AppCompatActivity implements SetStickerDi
         if(entrance_type.equals(MainActivity.SIGN_UP)){
             welcome_text_view.setText("Welcome " + my_name_as_string + ". \nPlease follow the instructions you got in school and set the above string to your scanner:\n" + device_connection_string);
         }
-        else{
+        else if(entrance_type.equals(MainActivity.PARENT_CHILD_CHECKUP)){
+            welcome_text_view.setText("Status page for student " + my_user_id_as_string);
+        }
+        else{ // entrance_type == MainActivity.SIGN_IN
             welcome_text_view.setText("Welcome " + my_name_as_string);
         }
 
@@ -75,7 +80,6 @@ public class student_main_page extends AppCompatActivity implements SetStickerDi
         show_all_subjects();
         show_needed_subjects();
         show_missing_subjects();
-        connect_to_signalR_and_wait_for_updates();
 
         // Set spinner for stickers setup:
         selected_subject_spinner = (Spinner) findViewById(R.id.selected_subject_spinner);
@@ -102,6 +106,8 @@ public class student_main_page extends AppCompatActivity implements SetStickerDi
             }
         });
 
+        connect_to_signalR_and_wait_for_updates();
+
         scan_my_bag_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,7 +123,6 @@ public class student_main_page extends AppCompatActivity implements SetStickerDi
                     return;
                 }
                 open_set_sticker_dialog_box();
-
             }
         });
     }
@@ -133,26 +138,36 @@ public class student_main_page extends AppCompatActivity implements SetStickerDi
                 }
                 hubConnection = MainActivity.get_hubconnection_from_successful_negotiate_response(response);
                 hubConnection.start();
-                hubConnection.on(MainActivity.DataBaseAndScanUpdates, new Action1<Object>() {
+                hubConnection.on(MainActivity.DataBaseAndScanUpdates, new Action1<DataBaseAndScanUpdates>() {
                     @Override
-                    public void invoke(Object param1) {
+                    public void invoke(DataBaseAndScanUpdates param1) {
                         System.out.println(MainActivity.DataBaseAndScanUpdates + " was invoked!");
-                        DataBaseAndScanUpdates params = (DataBaseAndScanUpdates) param1;  //cast the object to our expected DataBaseAndScanUpdates class
-                        System.out.println("Input from method: " + params);
-                        all_subjects = params.getAllSubjects();
-                        List<String> needed_subjects = params.getNeededSubjects();
-                        List<String> missing_subjects = params.getMissingSubjects();
-                        if(all_subjects != null){
-                            set_all_subjects(all_subjects);
+                        System.out.println("Input from method: " + param1);
+                        all_subjects = param1.getAllSubjects();
+                        needed_subjects = param1.getNeededSubjects();
+                        missing_subjects = param1.getMissingSubjects();
+                        String err_msg = param1.getErrorMessage();
+                        if(err_msg != null){
+                            show_message(err_msg);
                         }
-                        if(needed_subjects != null){
-                            set_needed_subjects(needed_subjects);
-                        }
-                        if(missing_subjects != null){
-                            set_missing_subjects(missing_subjects);
+                        else{
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if(all_subjects != null){
+                                        set_all_subjects(all_subjects);
+                                    }
+                                    if(needed_subjects != null){
+                                        set_needed_subjects(needed_subjects);
+                                    }
+                                    if(missing_subjects != null){
+                                        set_missing_subjects(missing_subjects);
+                                    }
+                                }
+                            });
                         }
                     }
-                }, Object.class);
+                }, DataBaseAndScanUpdates.class);
             }
             @Override
             public void onFailure(Call<NegotiateSignalROutput> call, Throwable t) {
@@ -174,13 +189,18 @@ public class student_main_page extends AppCompatActivity implements SetStickerDi
         edit_class_response.enqueue(new Callback<GenericResponse>() {
             @Override
             public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
-                Tuple get_subjects_result = MainActivity.log_request_errors(response, MainActivity.TEACHER, MainActivity.GET_ALL_SUBJECTS);
+                Tuple get_subjects_result = MainActivity.log_request_errors(response, MainActivity.STUDENT, MainActivity.GET_ALL_SUBJECTS);
                 if (get_subjects_result.getSucceeded()){
                     GenericResponse request_response = response.body();
                     System.out.println("Entire response of GetAllSubjects: " + request_response.getData());
                     all_subjects = (List<String>) request_response.getData();
                     System.out.println("Got associated_subjects to class " + my_class_name_as_string + ": " + all_subjects);
-                    set_all_subjects(all_subjects);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            set_all_subjects(all_subjects);
+                        }
+                    });
                 }
                 else{
                     System.out.println("Error in GetAllSubjects: " + get_subjects_result.getError_message());
@@ -212,9 +232,14 @@ public class student_main_page extends AppCompatActivity implements SetStickerDi
                 if (get_subjects_result.getSucceeded()){
                     GenericResponse request_response = response.body();
                     System.out.println("Entire response of GetMissingSubjects: " + request_response.getData());
-                    List<String> associated_subjects = (List<String>) request_response.getData();
-                    System.out.println("Got missing subjects: " + associated_subjects);
-                    set_missing_subjects(associated_subjects);
+                    missing_subjects = (List<String>) request_response.getData();
+                    System.out.println("Got missing subjects: " + missing_subjects);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            set_missing_subjects(missing_subjects);
+                        }
+                    });
                 }
                 else{
                     System.out.println("Error in GetMissingSubjects: " + get_subjects_result.getError_message());
@@ -246,9 +271,14 @@ public class student_main_page extends AppCompatActivity implements SetStickerDi
                 if (get_subjects_result.getSucceeded()){
                     GenericResponse request_response = response.body();
                     System.out.println("Entire response of GetNeededSubjects: " + request_response.getData());
-                    List<String> associated_subjects = (List<String>) request_response.getData();
-                    System.out.println("Got missing subjects: " + associated_subjects);
-                    set_needed_subjects(associated_subjects);
+                    needed_subjects = (List<String>) request_response.getData();
+                    System.out.println("Got missing subjects: " + needed_subjects);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            set_needed_subjects(needed_subjects);
+                        }
+                    });
                 }
                 else{
                     System.out.println("Error in GetNeededSubjects: " + get_subjects_result.getError_message());

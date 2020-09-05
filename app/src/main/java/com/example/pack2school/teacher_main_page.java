@@ -56,7 +56,7 @@ public class teacher_main_page extends AppCompatActivity implements CreateClassD
         }
 
         user_name_text_view.setText("Welcome " + my_user_name_as_string);
-        user_id_text_view.setText("User ID: " + my_user_id_as_string + ", Teacher.");
+        user_id_text_view.setText("User ID: " + my_user_id_as_string);
 
 
         selected_class_spinner = (Spinner) findViewById(R.id.selected_class_spinner);
@@ -110,7 +110,6 @@ public class teacher_main_page extends AppCompatActivity implements CreateClassD
     }
 
     private void open_update_books_window(String teacher_id, String class_name){
-        // TODO - USE get_class_subjects_and_open_next_intent to avoid code duplication
         JsonPlaceHolderApi jsonPlaceHolderApi = MainActivity.getRetrofitJsonPlaceHolderApi();
         SubjectRequest edit_class = new SubjectRequest(null,
                 class_name,
@@ -129,7 +128,7 @@ public class teacher_main_page extends AppCompatActivity implements CreateClassD
                     System.out.println("Entire response of GetAllSubjects: " + request_response.getData());
                     List<String> associated_subjects = (List<String>) request_response.getData();
                     System.out.println("Got associated_subjects to class " + class_name + ": " + associated_subjects);
-                    _open_update_books_window(teacher_id, class_name, associated_subjects);
+                    _open_update_books_window(associated_subjects);
                 }
                 else{
                     show_message("Error: " + get_subjects_result.getError_message());
@@ -145,7 +144,7 @@ public class teacher_main_page extends AppCompatActivity implements CreateClassD
         });
     }
 
-    private void _open_update_books_window(String teacher_id, String class_name,  List<String> subjects){
+    private void _open_update_books_window(List<String> subjects){
         ArrayList<String> casted_subjects = new ArrayList<>(subjects.size());
         casted_subjects.addAll(subjects);
         Intent intent = new Intent(this, teacher_update_class_books_page.class);
@@ -156,7 +155,6 @@ public class teacher_main_page extends AppCompatActivity implements CreateClassD
     }
 
     private void open_edit_class_window(String teacher_id, String class_name){
-        // TODO - USE get_class_subjects_and_open_next_intent to avoid code duplication
         JsonPlaceHolderApi jsonPlaceHolderApi = MainActivity.getRetrofitJsonPlaceHolderApi();
         SubjectRequest edit_class = new SubjectRequest(null,
                 class_name,
@@ -243,44 +241,3 @@ public class teacher_main_page extends AppCompatActivity implements CreateClassD
     }
 }
 
-//    private void get_class_subjects_and_open_next_intent(String teacher_id, String class_name, Method func){
-//        // Get the subjects associated with the class  - and call the next function ONLY from within the background http call.
-//        // We do it in order to avoid a situation where a flow of a certain activity continues running, thinking it has some value
-//        // that it got via an http request - but since the request failed or took a long time - he in fact does not have it:
-//        JsonPlaceHolderApi jsonPlaceHolderApi = MainActivity.getRetrofitJsonPlaceHolderApi();
-//        SubjectRequest edit_class = new SubjectRequest(null,
-//                class_name,
-//                null,
-//                null,
-//                null,
-//                null,
-//                null);
-//        Call<GenericResponse> edit_class_response = jsonPlaceHolderApi.GetAllSubjects(edit_class);
-//        edit_class_response.enqueue(new Callback<GenericResponse>() {
-//            @Override
-//            public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
-//                Tuple get_subjects_result = MainActivity.log_request_errors(response, MainActivity.TEACHER, MainActivity.EDIT_CLASS);
-//                if (get_subjects_result.getSucceeded()){
-//                    GenericResponse request_response = response.body();
-//                    System.out.println("Entire response of GetAllSubjects: " + request_response);
-//                    List<String> associated_subjects = (List<String>) request_response.getData();
-//                    System.out.println("Got associated_subjects to class " + class_name + ": " + associated_subjects);
-//                    try {
-//                        func.invoke();
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//                else{
-//                    show_message("Error: " + get_subjects_result.getError_message());
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<GenericResponse> call, Throwable t) {
-//                String err_message = t.getMessage();
-//                show_message("Error: " + err_message);
-//                System.out.println("Enqueueing a GetAllSubjects call failed! Failure message: \n" + err_message);
-//            }
-//        });
-//    }

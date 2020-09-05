@@ -7,6 +7,7 @@ public class DataBaseAndScanUpdates {
     private List<String> neededSubjects;
     private List<String> missingSubjects;
     private List<String> allSubjects;
+    private String errorMessage;
 
     public List<String> getNeededSubjects() {
         return neededSubjects;
@@ -19,4 +20,6 @@ public class DataBaseAndScanUpdates {
     public List<String> getAllSubjects() {
         return allSubjects;
     }
+
+    public String getErrorMessage() { return errorMessage; }
 }
