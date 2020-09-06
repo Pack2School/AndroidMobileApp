@@ -10,7 +10,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".teacher_create_class_page"></activity>
+        <activity android:name=".teacher_set_schedule"></activity>
+        <activity android:name=".teacher_create_class_page" />
         <activity android:name=".teacher_update_class_books_page" />
         <activity android:name=".teacher_edit_class_page" />
         <activity android:name=".sign_up_parent_page" />

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".teacher_set_schedule"
+    android:background="@color/cardview_light_background">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/class_name_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="false"
+                android:layout_marginTop="28dp"
+                android:layout_marginStart="16dp"
+                android:text="Update needed books"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/sunday_text"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sunday needed subjects:"
+                android:textSize="20dp"
+                android:layout_below="@+id/class_name_text_view"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp" />
+
+            <ListView
+                android:id="@+id/sunday_list_view"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:layout_below="@+id/sunday_text"
+                android:layout_marginTop="10dp" />
+
+            <TextView
+                android:id="@+id/monday_text"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Monday needed subjects:"
+                android:textSize="20dp"
+                android:layout_below="@+id/sunday_list_view"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp" />
+
+            <ListView
+                android:id="@+id/monday_list_view"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:layout_below="@+id/monday_text"
+                android:layout_marginTop="10dp" />
+
+            <TextView
+                android:id="@+id/tuesday_text"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tuesday needed subjects:"
+                android:textSize="20dp"
+                android:layout_below="@+id/monday_list_view"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp" />
+
+            <ListView
+                android:id="@+id/tuesday_list_view"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:layout_below="@+id/tuesday_text"
+                android:layout_marginTop="10dp" />
+
+            <TextView
+                android:id="@+id/wedensday_text"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Wedensday needed subjects:"
+                android:textSize="20dp"
+                android:layout_below="@+id/tuesday_list_view"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp" />
+
+            <ListView
+                android:id="@+id/wedensday_list_view"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:layout_below="@+id/wedensday_text"
+                android:layout_marginTop="10dp" />
+
+            <TextView
+                android:id="@+id/thursday_text"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Thursday needed subjects:"
+                android:textSize="20dp"
+                android:layout_below="@+id/wedensday_list_view"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp" />
+
+            <ListView
+                android:id="@+id/thursday_list_view"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:layout_below="@+id/thursday_text"
+                android:layout_marginTop="10dp" />
+
+            <TextView
+                android:id="@+id/friday_text"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Friday needed subjects:"
+                android:textSize="20dp"
+                android:layout_below="@+id/thursday_list_view"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp" />
+
+            <ListView
+                android:id="@+id/friday_list_view"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:layout_below="@+id/friday_text"
+                android:layout_marginTop="10dp" />
+
+            <Button
+                android:id="@+id/update_schedule_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_below="@+id/friday_list_view"
+                android:text="send update"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp" />
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>

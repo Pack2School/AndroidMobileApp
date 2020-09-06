@@ -23,8 +23,10 @@ public class teacher_update_class_books_page extends AppCompatActivity {
     Intent myIntent;
     String my_user_id_as_string;
     String my_class_name_as_string;
+    List<String> list_view_choices;
     TextView class_name_text_view;
     Button update_tomorrow_btn;
+    Button update_entire_schedule_btn;
 
     ArrayList<String> selected_books = new ArrayList<>();
 
@@ -45,7 +47,7 @@ public class teacher_update_class_books_page extends AppCompatActivity {
             subjects = new ArrayList<>();
         }
 
-        List<String> list_view_choices = new ArrayList<>();
+        list_view_choices = new ArrayList<>();
         for (String choice: subjects){
             list_view_choices.add(choice);
         }
@@ -103,9 +105,31 @@ public class teacher_update_class_books_page extends AppCompatActivity {
                 });
             }
         });
+
+        update_entire_schedule_btn = (Button) findViewById(R.id.update_entire_schedule_btn);
+        update_entire_schedule_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (list_view_choices.size() == 0){
+                    show_message("Sorry, since there are no subjects in this class, you cant set a schedule.");
+                    return;
+                }
+                open_set_schedule_page();
+            }
+        });
     }
 
     private void show_message(String message){
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+
+    private void open_set_schedule_page(){
+        ArrayList<String> casted_subjects = new ArrayList<>(list_view_choices.size());
+        casted_subjects.addAll(list_view_choices);
+        Intent intent = new Intent(this, teacher_set_schedule.class);
+        intent.putExtra(MainActivity.USER_ID, my_user_id_as_string);
+        intent.putExtra(MainActivity.CLASSES_IDS, my_class_name_as_string);
+        intent.putExtra(MainActivity.SUBJECTS, casted_subjects);
+        startActivity(intent);
     }
 }
