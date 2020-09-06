@@ -41,7 +41,7 @@
             android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="You can add a new class.\nOr, if you wish to update the books for an existing class, or to edit the class subjects, please choose a class from the drop down menu and then press on the option you desire."
+            android:text="You can add a new class, or choose an existing class from the dropdown menu and edit it/update it's needed textbooks."
             android:textSize="20dp"
             android:layout_below="@+id/user_id_text_view"
             android:layout_marginStart="16dp"
@@ -71,7 +71,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/create_class_btn"
-            android:text="Update Tomorrows Books"
+            android:text="Update Schedule"
             android:layout_marginTop="20dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp" />

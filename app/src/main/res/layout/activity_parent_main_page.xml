@@ -51,23 +51,12 @@
         android:layout_marginTop="5dp"/>
 
     <Button
-        android:id="@+id/add_children_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Add another child (disabled)"
-        android:layout_below="@+id/selected_child_spinner"
-        android:layout_marginTop="200dp"
-        android:layout_gravity="center_horizontal|center"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
-        android:layout_marginEnd="@dimen/activity_horizontal_margin" />
-
-    <Button
         android:id="@+id/scan_my_bag_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/add_children_btn"
+        android:layout_below="@+id/selected_child_spinner"
         android:text="Show Status"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="200dp"
         android:layout_gravity="center_horizontal|center"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginEnd="@dimen/activity_horizontal_margin" />

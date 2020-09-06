@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     // Operation names:
     public static final String SIGN_UP = "Sign Up";
     public static final String SIGN_IN = "Sign in";
+    public static final String SET_SCHEDULE = "Set Schedule";
     public static final String PARENT_CHILD_CHECKUP = "Parent child checkup";
     public static final String SCAN = "Scan";
     public static final String SET_STICKER = "Set Sticker";

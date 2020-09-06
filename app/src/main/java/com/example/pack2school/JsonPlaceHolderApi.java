@@ -46,4 +46,7 @@ public interface JsonPlaceHolderApi {
 
     @POST("UpdateSubjectStickers")
     Call<GenericResponse> UpdateSubjectStickers(@Body SubjectRequest body);
+
+    @POST("SetClassSchedule")
+    Call<GenericResponse> SetClassSchedule(@Body ScheduleSetter body);
 }

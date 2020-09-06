@@ -94,7 +94,7 @@ public class teacher_main_page extends AppCompatActivity implements CreateClassD
                 if (selected_class == null){
                     return;
                 }
-                open_update_books_window(my_user_id_as_string, selected_class);
+                open_update_books_window(selected_class);
             }
         });
 
@@ -109,7 +109,7 @@ public class teacher_main_page extends AppCompatActivity implements CreateClassD
         });
     }
 
-    private void open_update_books_window(String teacher_id, String class_name){
+    private void open_update_books_window(String class_name){
         JsonPlaceHolderApi jsonPlaceHolderApi = MainActivity.getRetrofitJsonPlaceHolderApi();
         SubjectRequest edit_class = new SubjectRequest(null,
                 class_name,
