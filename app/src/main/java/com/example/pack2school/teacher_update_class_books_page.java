@@ -90,6 +90,7 @@ public class teacher_update_class_books_page extends AppCompatActivity {
                         if (get_subjects_result.getSucceeded()){
                             GenericResponse request_response = response.body();
                             System.out.println("Entire response of EditSubject: " + request_response.getData());
+                            show_message("Successfully updated tomorrow needed subjects");
                         }
                         else{
                             show_message("Error: " + get_subjects_result.getError_message());

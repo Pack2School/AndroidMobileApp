@@ -211,6 +211,29 @@ public class MainActivity extends AppCompatActivity {
 
     // General Utils:
 
+    public static Tuple<Boolean, String> check_signup_items(String user_name, String user_id, String password, String password_rep){
+        if(does_string_contains_spaces_or_letters(user_name)){
+            return new Tuple<>(false, "Error: name can not be empty, must be joined (i.e no spaces), should not contain numbers, and be less then 50 characters.");
+        }
+        if (user_id == null || user_id.length() == 0){
+            return new Tuple<>(false, "Error: ID can not be empty.");
+        }
+        if (password == null || password.length() == 0){
+            return new Tuple<>(false, "Error: password can not be empty.");
+        }
+        if(!are_passwords_aligned(password, password_rep)){
+            return new Tuple<>(false, "Error: repeated password and initial one are not identical.");
+        }
+        return new Tuple<>(true, null);
+    }
+
+    public static boolean does_string_contains_spaces_or_letters(String str){
+        if (str == null || str.length() == 0 || str.matches(".*\\d.*") || str.contains(" ") || str.length() > 50){
+            return true;
+        }
+        return false;
+    }
+
     public static boolean are_passwords_aligned(String first, String second){
         if(!first.equals(second)){
             return false;

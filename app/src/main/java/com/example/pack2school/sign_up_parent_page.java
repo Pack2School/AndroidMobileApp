@@ -50,8 +50,9 @@ public class sign_up_parent_page extends AppCompatActivity {
                 password_input_str = password_input.getText().toString();
                 password_repeat_input_str = password_repeat_input.getText().toString();
                 email_input_str = email_input.getText().toString();
-                if(! MainActivity.are_passwords_aligned(password_input_str, password_repeat_input_str)){
-                    show_message("Error: repeated password and initial one are not identical.");
+                Tuple sign_up_items = MainActivity.check_signup_items(name_input_str, id_input_str, password_input_str, password_repeat_input_str);
+                if(!sign_up_items.getSucceeded()){
+                    show_message(sign_up_items.getError_message());
                     return;
                 }
                 List<String> children_ids = Arrays.asList(children_ids_input_str.split(" "));
