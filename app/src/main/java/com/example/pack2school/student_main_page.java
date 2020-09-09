@@ -36,12 +36,14 @@ public class student_main_page extends AppCompatActivity implements SetStickerDi
     TextView all_subjects_text_view;
     TextView needed_subjects_text_view;
     TextView missing_subjects_text_view;
+    TextView extra_subjects_text_view;
     Button scan_my_bag_btn;
     Button set_sticker_btn;
     HubConnection hubConnection;
     List<String> all_subjects;
     List<String> needed_subjects;
     List<String> missing_subjects;
+    List<String> extra_subjects;
     Spinner selected_subject_spinner;
     ArrayAdapter<String> spinner_adapter;
     String selected_subject;
@@ -61,6 +63,7 @@ public class student_main_page extends AppCompatActivity implements SetStickerDi
         all_subjects_text_view = (TextView)findViewById(R.id.all_subjects_text_view);
         needed_subjects_text_view = (TextView)findViewById(R.id.needed_subjects_text_view);
         missing_subjects_text_view = (TextView)findViewById(R.id.missing_subjects_text_view);
+        extra_subjects_text_view = (TextView)findViewById(R.id.extra_subjects_text_view);
 
         welcome_text_view = (TextView)findViewById(R.id.welcome_text_view);
         if(entrance_type.equals(MainActivity.SIGN_UP)){
@@ -146,6 +149,7 @@ public class student_main_page extends AppCompatActivity implements SetStickerDi
                         all_subjects = param1.getAllSubjects();
                         needed_subjects = param1.getNeededSubjects();
                         missing_subjects = param1.getMissingSubjects();
+                        extra_subjects = param1.getExtraSubjects();
                         String err_msg = param1.getErrorMessage();
                         if(err_msg != null){
                             show_message(err_msg);
@@ -162,6 +166,9 @@ public class student_main_page extends AppCompatActivity implements SetStickerDi
                                     }
                                     if(missing_subjects != null){
                                         set_missing_subjects(missing_subjects);
+                                    }
+                                    if(extra_subjects != null){
+                                        set_extra_subjects(extra_subjects);
                                     }
                                 }
                             });
@@ -303,6 +310,13 @@ public class student_main_page extends AppCompatActivity implements SetStickerDi
             spinner_adapter.add(item);
         }
         spinner_adapter.notifyDataSetChanged();
+    }
+
+    private void set_extra_subjects(List<String> subjects){
+        String ordered_subjects = MainActivity.order_list_items_to_txt(subjects);
+        String msg = "Extra books in the backpack are:\n" + ordered_subjects;
+        System.out.println(msg);
+        extra_subjects_text_view.setText(msg);
     }
 
     private void set_needed_subjects(List<String> subjects){

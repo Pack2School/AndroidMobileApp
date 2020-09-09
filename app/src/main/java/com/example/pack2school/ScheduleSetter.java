@@ -3,23 +3,23 @@ package com.example.pack2school;
 import java.util.List;
 
 public class ScheduleSetter {
-    List<String> sundaySubjects;
-    List<String> mondaySubjects;
-    List<String> tuesdaySubjects;
-    List<String> wedensdaySubjects;
-    List<String> thursdaySubjects;
-    List<String> fridaySubjects;
-    String teacherID;
+    List<String> Sunday;
+    List<String> Monday;
+    List<String> Tuesday;
+    List<String> Wedensday;
+    List<String> Thursday;
+    List<String> Friday;
     String className;
 
-    public ScheduleSetter(List<String> sundaySubjects, List<String> mondaySubjects, List<String> tuesdaySubjects, List<String> wedensdaySubjects, List<String> thursdaySubjects, List<String> fridaySubjects, String teacherID, String className) {
-        this.sundaySubjects = sundaySubjects;
-        this.mondaySubjects = mondaySubjects;
-        this.tuesdaySubjects = tuesdaySubjects;
-        this.wedensdaySubjects = wedensdaySubjects;
-        this.thursdaySubjects = thursdaySubjects;
-        this.fridaySubjects = fridaySubjects;
-        this.teacherID = teacherID;
+    public ScheduleSetter(List<String> sundaySubjects, List<String> mondaySubjects, List<String> tuesdaySubjects,
+                          List<String> wedensdaySubjects, List<String> thursdaySubjects, List<String> fridaySubjects,
+                          String className) {
+        this.Sunday = sundaySubjects;
+        this.Monday = mondaySubjects;
+        this.Tuesday = tuesdaySubjects;
+        this.Wedensday = wedensdaySubjects;
+        this.Thursday = thursdaySubjects;
+        this.Friday = fridaySubjects;
         this.className = className;
     }
 }

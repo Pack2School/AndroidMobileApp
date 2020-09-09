@@ -85,7 +85,6 @@ public class teacher_set_schedule extends AppCompatActivity {
                         wedensday_subjects_list,
                         thursday_subjects_list,
                         friday_subjects_list,
-                        my_user_id_as_string,
                         my_class_name_as_string);
                 JsonPlaceHolderApi jsonPlaceHolderApi = MainActivity.getRetrofitJsonPlaceHolderApi();
                 Call<GenericResponse> set_needed_response = jsonPlaceHolderApi.SetClassSchedule(schedule);

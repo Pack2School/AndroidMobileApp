@@ -43,12 +43,12 @@ public class sign_up_teacher_page extends AppCompatActivity {
                 email_input_str = email_input.getText().toString();
                 password_input_str = password_input.getText().toString();
                 password_repeat_input_str = password_repeat_input.getText().toString();
-                if(! MainActivity.are_passwords_aligned(password_input_str, password_repeat_input_str)){
-                    show_message("Error: repeated password and initial one are not identical.");
+                Tuple sign_up_items = MainActivity.check_signup_items(name_input_str, id_input_str, password_input_str, password_repeat_input_str);
+                if(!sign_up_items.getSucceeded()){
+                    show_message(sign_up_items.getError_message());
                     return;
                 }
                 JsonPlaceHolderApi jsonPlaceHolderApi = MainActivity.getRetrofitJsonPlaceHolderApi();
-                // for a list of size 1: Collections.singletonList("NA")
                 UserRequest sign_up_input = new UserRequest(id_input_str,
                                                             name_input_str,
                                                             type_input_str,
@@ -64,7 +64,10 @@ public class sign_up_teacher_page extends AppCompatActivity {
                     public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
                         Tuple sign_up_result = MainActivity.log_request_errors(response, type_input_str, MainActivity.SIGN_UP);
                         if (sign_up_result.getSucceeded()){
-                            call_open_teacher_main_page(id_input_str, name_input_str);
+                            GenericResponse request_response = response.body();
+                            System.out.println("Entire response of teacher sign up: " + request_response.getData());
+                            String given_user_name = (String) request_response.getData();
+                            call_open_teacher_main_page(id_input_str, given_user_name);
                         }
                         else{
                             show_message("Error: " + sign_up_result.getError_message());
