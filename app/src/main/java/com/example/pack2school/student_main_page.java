@@ -146,26 +146,33 @@ public class student_main_page extends AppCompatActivity implements SetStickerDi
                     public void invoke(DataBaseAndScanUpdates param1) {
                         System.out.println(MainActivity.DataBaseAndScanUpdates + " was invoked!");
                         System.out.println("Input from method: " + param1);
-                        all_subjects = param1.getAllSubjects();
+                        List<String> recv_all = param1.getAllSubjects();
                         needed_subjects = param1.getNeededSubjects();
                         missing_subjects = param1.getMissingSubjects();
                         extra_subjects = param1.getExtraSubjects();
                         String err_msg = param1.getErrorMessage();
+                        System.out.println("all: " + recv_all + "\nmissing: " + missing_subjects + "\nneeded: " + needed_subjects + "\nextra: " + extra_subjects + "\nerr: " + err_msg);
                         if(err_msg != null){
-                            show_message(err_msg);
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    show_message(err_msg);
+                                }
+                            });
                         }
                         else{
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    if(all_subjects != null){
+                                    if(recv_all != null){
+                                        all_subjects = recv_all;
                                         set_all_subjects(all_subjects);
                                     }
                                     if(needed_subjects != null){
                                         set_needed_subjects(needed_subjects);
                                     }
                                     if(missing_subjects != null){
-                                        set_missing_subjects(missing_subjects);
+                                        set_missing_subjects(missing_subjects,1);
                                     }
                                     if(extra_subjects != null){
                                         set_extra_subjects(extra_subjects);
@@ -244,7 +251,7 @@ public class student_main_page extends AppCompatActivity implements SetStickerDi
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            set_missing_subjects(missing_subjects);
+                            set_missing_subjects(missing_subjects,0);
                         }
                     });
                 }
@@ -326,9 +333,14 @@ public class student_main_page extends AppCompatActivity implements SetStickerDi
         needed_subjects_text_view.setText(msg);
     }
 
-    private void set_missing_subjects(List<String> subjects){
+    private void set_missing_subjects(List<String> subjects, Integer update_type){
+        String msg = "";
         String ordered_subjects = MainActivity.order_list_items_to_txt(subjects);
-        String msg = "Missing subjects are:\n" + ordered_subjects;
+        if (update_type == 1){
+            msg = "Missing subjects after scan are:\n" + ordered_subjects;
+        } else{
+            msg = "Missing subjects are:\n" + ordered_subjects;
+        }
         System.out.println(msg);
         missing_subjects_text_view.setText(msg);
     }

@@ -6,7 +6,7 @@ public class ScheduleSetter {
     List<String> Sunday;
     List<String> Monday;
     List<String> Tuesday;
-    List<String> Wedensday;
+    List<String> Wednesday;
     List<String> Thursday;
     List<String> Friday;
     String className;
@@ -17,7 +17,7 @@ public class ScheduleSetter {
         this.Sunday = sundaySubjects;
         this.Monday = mondaySubjects;
         this.Tuesday = tuesdaySubjects;
-        this.Wedensday = wedensdaySubjects;
+        this.Wednesday = wedensdaySubjects;
         this.Thursday = thursdaySubjects;
         this.Friday = fridaySubjects;
         this.className = className;
