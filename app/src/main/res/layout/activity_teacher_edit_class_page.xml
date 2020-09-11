@@ -29,7 +29,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Type in a subject name to add a new subject or rename an existing one.\nOr, delete an existing subject.\n\nSubjects to choose from:"
+                android:text="Type in a subject name to add a new subject or rename an existing one.\nOr, delete an existing subject.\n\nSubjects to choose from (make sure you actually press on the selected subject and a pop up appears below):"
                 android:textSize="20dp"
                 android:layout_below="@+id/class_name_text_view"
                 android:layout_marginStart="16dp"
